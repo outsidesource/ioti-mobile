@@ -37,8 +37,8 @@ import UIKit
 import JavaScriptCore
 
 //IoT4I API
-let applicationRoute = "iot4insurance-api-v.mybluemix.net"//PUT APPLICATION ROUTE HERE
-let applicationId = "e19a76b5-8b3a-48bb-8921-ea82f848dddd"//PUT APPLICATION CLIENTID HERE
+let applicationRoute = //PUT APPLICATION ROUTE HERE
+let applicationId = //PUT APPLICATION CLIENTID HERE
 
 let DEMO_MODE:Bool = true
 let APIURL = applicationRoute
