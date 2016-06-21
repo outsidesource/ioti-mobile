@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
+    <entity name="Device" representedClassName="Device" syncable="YES">
+        <attribute name="activation" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="deviceId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="deviceType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="shield" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shield" inverseName="devices" inverseEntity="Shield" syncable="YES"/>
+    </entity>
+    <entity name="HazardEvent" representedClassName="HazardEvent" syncable="YES">
+        <attribute name="handledAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="handledBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="handledOperation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isHandled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isLocal" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isUrgent" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isViolated" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="locationDesc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="sensorDesc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="shield" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shield" inverseName="hazards" inverseEntity="Shield" syncable="YES"/>
+    </entity>
+    <entity name="Promotion" representedClassName=".Promotion" syncable="YES">
+        <attribute name="btnTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="Shield" representedClassName="Shield" syncable="YES">
+        <attribute name="assistancePhone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="description_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="insurancePhone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Device" inverseName="shield" inverseEntity="Device" syncable="YES"/>
+        <relationship name="hazards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HazardEvent" inverseName="shield" inverseEntity="HazardEvent" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Device" positionX="-63" positionY="81" width="128" height="165"/>
+        <element name="HazardEvent" positionX="-54" positionY="-9" width="128" height="270"/>
+        <element name="Promotion" positionX="-54" positionY="108" width="128" height="165"/>
+        <element name="Shield" positionX="-63" positionY="-18" width="128" height="195"/>
+    </elements>
+</model>

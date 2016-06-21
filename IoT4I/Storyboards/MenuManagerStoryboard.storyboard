@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zZ6-vn-PTS">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Main View Controller-->
+        <scene sceneID="7gD-Sk-xQP">
+            <objects>
+                <viewController id="zZ6-vn-PTS" customClass="MainViewController" customModule="IoT4I" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RQ5-4b-th4"/>
+                        <viewControllerLayoutGuide type="bottom" id="Xde-wA-OIl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vVw-bx-bae">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="CI7-N3-gZF" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="zTI-4v-CQt"/>
+                        <segue destination="CYe-ut-PrG" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="Ohz-fI-LAt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n8h-Ff-RwV" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="445" y="536"/>
+        </scene>
+        <!--ShieldsStoryboard-->
+        <scene sceneID="5TG-2q-hHd">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ShieldsStoryboard" id="CI7-N3-gZF" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B1V-Yz-1ry" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="998.5" y="536"/>
+        </scene>
+        <!--MenuSideBarStoryboard-->
+        <scene sceneID="qFi-ad-Szn">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MenuSideBarStoryboard" id="CYe-ut-PrG" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yjv-rG-Jk9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="445" y="982"/>
+        </scene>
+    </scenes>
+</document>
