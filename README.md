@@ -8,3 +8,4 @@ implementation for a mobile client of the IoT4I Solution. The application allows
 - [IBM IoT for Insurance](https://console.ng.bluemix.net/docs/services/IotInsurance/index.html)
 
  
+ 
