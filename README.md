@@ -45,13 +45,11 @@ pod install
 
 ## Parameters required - Locating the parameters for your mobile starter app
 
-- To locate the correct values for the parameters that are required in your constants.swift file, as follows:
+#### To locate the correct values for the parameters that are required in your constants.swift file, as follows:
 
-1) In your Bluemix dashboard, select your IoT for Insurance service to display the console.
-
-2) Click Service Credentials. applicationRoute/applicationId
-
-3) Specify the bluemix service - applicationRoute/applicationId in Constants.swift  (app will not compile without this parameters):
+1. In your Bluemix dashboard, select your IoT for Insurance service to display the console.
+2. Click Service Credentials. applicationRoute/applicationId
+3. Specify the bluemix service - applicationRoute/applicationId in Constants.swift  (app will not compile without this parameters):
 
 ```Swift
 let applicationRoute = //PUT APPLICATION ROUTE HERE
