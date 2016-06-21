@@ -15,8 +15,13 @@ This IoT for Insurance Starter Application is intended solely for use with an Ap
 
 ## Requirements
 
-- iOS 9.0+
-- XCode 7.3+
+- An IBM® Bluemix® account. A 30-day trial account is free.
+- The IoT for Insurance service deployed in Bluemix.
+- An iOS 9.0 or higher iPhone mobile device.
+- Apple Xcode 7.3 or higher integrated development environment.
+- CocoaPods installed on your computer. See the CocoaPods website.
+- The parameters that are required to connect the mobile starter app to your instance of the service.
+
 
 ##<a name="cocoaInstall"></a> Install CocoaPods
 
@@ -37,9 +42,20 @@ git clone PROJECTURL
 ```
 pod install
 ```
-- Specify the bluemix service - applicationRoute/applicationId in Constants.swift  (app wont compile without this parameters):
-```Swift
 
+## Parameters required
+
+# Locating the parameters for your mobile starter app
+
+To locate the correct values for the parameters that are required in your constants.swift file, as follows:
+
+1) In your Bluemix dashboard, select your IoT for Insurance service to display the console.
+
+2) Click Service Credentials. applicationRoute/applicationId
+
+3) Specify the bluemix service - applicationRoute/applicationId in Constants.swift  (app will not compile without this parameters):
+
+```Swift
 let applicationRoute = //PUT APPLICATION ROUTE HERE
 let applicationId = //PUT APPLICATION CLIENTID HERE
 
