@@ -36,18 +36,16 @@ The repository comes with a sample, the IoT4I project. To run this sample, you n
 
 - clone the repository:
 ```
-git clone PROJECTURL
+git clone https://github.com/ibm-watson-iot/ioti-mobile.git
 ```
 - Install the pods
 ```
 pod install
 ```
 
-## Parameters required
+## Parameters required - Locating the parameters for your mobile starter app
 
-# Locating the parameters for your mobile starter app
-
-To locate the correct values for the parameters that are required in your constants.swift file, as follows:
+- To locate the correct values for the parameters that are required in your constants.swift file, as follows:
 
 1) In your Bluemix dashboard, select your IoT for Insurance service to display the console.
 
@@ -81,12 +79,12 @@ let applicationId = //PUT APPLICATION CLIENTID HERE
 
 ## Useful links
 
-[IBM Watson IoT](https://internetofthings.ibmcloud.com)
-[IBM Watson Internet of Things](http://www.ibm.com/internet-of-things/)  
-[IBM Watson IoT Platform](http://www.ibm.com/internet-of-things/iot-solutions/watson-iot-platform/)   
-[IBM Watson IoT Platform Developers Community](https://developer.ibm.com/iotplatform/)
-[IBM Bluemix](https://bluemix.net/)  
-[IBM Bluemix Documentation](https://www.ng.bluemix.net/docs/)  
-[IBM Bluemix Developers Community](http://developer.ibm.com/bluemix)  
+* [IBM Watson IoT](https://internetofthings.ibmcloud.com)
+* [IBM Watson Internet of Things](http://www.ibm.com/internet-of-things/)  
+* [IBM Watson IoT Platform](http://www.ibm.com/internet-of-things/iot-solutions/watson-iot-platform/)   
+* [IBM Watson IoT Platform Developers Community](https://developer.ibm.com/iotplatform/)
+* [IBM Bluemix](https://bluemix.net/)  
+* [IBM Bluemix Documentation](https://www.ng.bluemix.net/docs/)  
+* [IBM Bluemix Developers Community](http://developer.ibm.com/bluemix)  
 
 
