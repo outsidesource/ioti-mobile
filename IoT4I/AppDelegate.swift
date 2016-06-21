@@ -52,14 +52,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let attrNormal: [NSObject : AnyObject] = [
             NSForegroundColorAttributeName: UIColor(red: (255.0/255.0), green: (255.0/255.0), blue: (255.0/255.0), alpha: 0.8),
-            NSFontAttributeName: UIFont(name: "SFUIDisplay-Regular", size: 16.0)!
+            NSFontAttributeName: UIFont(name: "SFUIDisplay-Regular", size: 16.0) ?? UIFont(name: "Helvetica Neue", size: 16.0)!
         ]
         
         UISegmentedControl.appearance().setTitleTextAttributes(attrNormal as [NSObject : AnyObject] , forState: .Normal)
         
         let attrSelected: [NSObject : AnyObject] = [
             NSForegroundColorAttributeName: UIColor(red: (255.0/255.0), green: (255.0/255.0), blue: (255.0/255.0), alpha: 1.0),
-            NSFontAttributeName: UIFont(name: "SFUIDisplay-Medium", size: 16.0)!
+            NSFontAttributeName: UIFont(name: "SFUIDisplay-Medium", size: 16.0) ?? UIFont(name: "Helvetica Neue", size: 16.0)!
         ]
         
         UISegmentedControl.appearance().setTitleTextAttributes(attrSelected as [NSObject : AnyObject] , forState: .Selected)

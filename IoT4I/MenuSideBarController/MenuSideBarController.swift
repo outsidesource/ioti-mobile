@@ -147,10 +147,10 @@ class MenuSideBarController: UITableViewController {
 
         switch  SideMenu(rawValue: indexPath.row) {
         case .Overview,.Policy:
-            cell.textLabel?.font = UIFont(name: "SFUIText-Bold", size: 16.0)
+            cell.textLabel?.font = UIFont(name: "SFUIText-Bold", size: 16.0)  ?? UIFont(name: "Helvetica Neue", size: 16.0)!
             break
         default:
-            cell.textLabel?.font = UIFont(name: "SFUIText-Light", size: 16.0)
+            cell.textLabel?.font = UIFont(name: "SFUIText-Light", size: 16.0)  ?? UIFont(name: "Helvetica Neue", size: 16.0)!
             break
         }
         
