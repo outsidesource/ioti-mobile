@@ -6,3 +6,5 @@ implementation for a mobile client of the IoT4I Solution. The application allows
 
 - [IBM Watson IoT](https://internetofthings.ibmcloud.com)
 - [IBM IoT for Insurance](https://console.ng.bluemix.net/docs/services/IotInsurance/index.html)
+
+ 
