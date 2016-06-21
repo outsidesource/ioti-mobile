@@ -58,7 +58,7 @@ class HazardDetailsViewController: UIViewController {
         
         let attrNavigationTitle: [String : AnyObject] = [
             NSForegroundColorAttributeName: UIColor.whiteColor(),
-            NSFontAttributeName: UIFont(name: "SFUIDisplay-Semibold", size: 17.0)!
+            NSFontAttributeName: UIFont(name: "SFUIDisplay-Semibold", size: 17.0)!  ?? UIFont(name: "Helvetica Neue", size: 17.0)!
         ]
         
         self.navigationController!.navigationBar.titleTextAttributes = attrNavigationTitle
