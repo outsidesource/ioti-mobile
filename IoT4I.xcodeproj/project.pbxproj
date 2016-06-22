@@ -220,13 +220,6 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		8F5066491CB11EBC00ABE123 /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Fonts;
-			sourceTree = "<group>";
-		};
 		8F5BAABC1CB243DE007F3F41 /* MainViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -348,7 +341,6 @@
 				8F38A2C41CA1649300A40C05 /* CoreData */,
 				8F5BAABF1CB248F1007F3F41 /* TipsCollectionController */,
 				8F5BAABC1CB243DE007F3F41 /* MainViewController */,
-				8F5066491CB11EBC00ABE123 /* Fonts */,
 				8F2ED9B51CA9116100FD381F /* ShieldViewsContainer */,
 				8F60483E1C9FE1F8002362C7 /* CellsHeadersFooters */,
 				8FC2C2031C9FDC1200BC5846 /* ShieldsCollectionController */,
