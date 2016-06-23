@@ -3,15 +3,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="SF-UI-Text-Bold.otf">
-            <string>SFUIText-Bold</string>
-        </mutableArray>
-        <mutableArray key="SF-UI-Text-Regular.otf">
-            <string>SFUIText-Regular</string>
-            <string>SFUIText-Regular</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -23,13 +14,13 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promotion no. 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wka-40-41D">
                         <rect key="frame" x="80" y="30" width="240" height="17"/>
-                        <fontDescription key="fontDescription" name="SFUIText-Bold" family="SF UI Text" pointSize="14"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact one of our authorized plumbers to install your water leak detection solution today" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="76w-ed-Upv">
-                        <rect key="frame" x="80" y="62" width="200" height="51"/>
-                        <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
+                        <rect key="frame" x="80" y="62" width="200" height="49"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -39,7 +30,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="3OA-4E-YfQ"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="18"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                         <state key="normal" title="Call now">
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>

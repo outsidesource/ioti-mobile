@@ -3,13 +3,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="SF-UI-Text-Regular.otf">
-            <string>SFUIText-Regular</string>
-            <string>SFUIText-Regular</string>
-            <string>SFUIText-Regular</string>
-        </mutableArray>
-    </customFonts>
     <scenes>
         <!--Navigation Controller-->
         <scene sceneID="0xj-Zi-ez6">
@@ -43,29 +36,29 @@
                                 <rect key="frame" x="240" y="134" width="121" height="42"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0V-hK-nFE">
-                                <rect key="frame" x="160" y="216" width="280" height="117"/>
+                                <rect key="frame" x="160" y="216" width="280" height="98"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="RPB-2T-sZD"/>
                                 </constraints>
                                 <string key="text">With Wink, building a smart home is easier than ever before. Start with connected products from your favorite brands—including GE, Nest, Philips, and Schlage. Before you know it, your home will be doing things you never thought possible.</string>
-                                <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vjt-0g-S6h">
-                                <rect key="frame" x="160" y="343" width="280" height="117"/>
+                                <rect key="frame" x="160" y="324" width="280" height="115"/>
                                 <string key="text">Lights. Power. Security. Now they’re all connected through a single app, so you don’t need a different one for every product. Simple controls allow you to monitor and manage everything in your home. This means it can do more for you, and you can do less. Finally.</string>
-                                <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L3O-XN-ASM">
-                                <rect key="frame" x="175" y="530" width="250" height="50"/>
+                                <rect key="frame" x="175" y="509" width="250" height="50"/>
                                 <color key="backgroundColor" red="0.1803921568627451" green="0.62352941176470589" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="eXO-oD-XpI"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="Connect to Wink">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>

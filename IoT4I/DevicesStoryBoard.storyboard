@@ -253,8 +253,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BSq-KB-Vry">
-                                                    <rect key="frame" x="23" y="16" width="61" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BSq-KB-Vry">
+                                                    <rect key="frame" x="23" y="16" width="59" height="18"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>

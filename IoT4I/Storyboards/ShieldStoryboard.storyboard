@@ -4,11 +4,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="SF-UI-Text-Medium.otf">
-            <string>SFUIText-Medium</string>
-        </mutableArray>
-    </customFonts>
     <scenes>
         <!--Shield View Controller-->
         <scene sceneID="Gfo-Xx-ZIC">
@@ -33,8 +28,8 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Water Prevention Shield" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Od7-xr-Ca5">
-                                        <rect key="frame" x="70" y="22" width="185" height="20"/>
-                                        <fontDescription key="fontDescription" name="SFUIText-Medium" family="SF UI Text" pointSize="16"/>
+                                        <rect key="frame" x="70" y="22" width="178" height="20"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -103,7 +98,7 @@
                                 <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XDS-t1-WaW" id="Uca-z4-Bws">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -131,7 +126,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="shieldFire" width="45" height="56"/>
+        <image name="shieldFire" width="45" height="55"/>
         <image name="tipShadow" width="1" height="6"/>
     </resources>
 </document>

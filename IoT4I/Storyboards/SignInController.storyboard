@@ -3,14 +3,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="SF-UI-Text-Regular.otf">
-            <string>SFUIText-Regular</string>
-            <string>SFUIText-Regular</string>
-            <string>SFUIText-Regular</string>
-            <string>SFUIText-Regular</string>
-        </mutableArray>
-    </customFonts>
     <scenes>
         <!--Sign In Controller-->
         <scene sceneID="hlD-rc-W30">
@@ -25,37 +17,37 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D4j-lA-ciA">
-                                <rect key="frame" x="142" y="147" width="316" height="306"/>
+                                <rect key="frame" x="142" y="148" width="316" height="304"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOR-C1-iB3">
-                                        <rect key="frame" x="8" y="0.0" width="93" height="24"/>
-                                        <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="20"/>
+                                        <rect key="frame" x="8" y="0.0" width="88" height="24"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Y57-CE-rOO">
-                                        <rect key="frame" x="8" y="136" width="300" height="40"/>
+                                        <rect key="frame" x="8" y="134" width="300" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="JjW-mE-3E6"/>
                                             <constraint firstAttribute="width" constant="300" id="v4o-jm-oHR"/>
                                         </constraints>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.34999999999999998" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NFR-qb-AAL">
-                                        <rect key="frame" x="8" y="186" width="300" height="40"/>
+                                        <rect key="frame" x="8" y="184" width="300" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="VmU-pI-wqf"/>
                                         </constraints>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.34999999999999998" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h1L-WF-Hpa">
-                                        <rect key="frame" x="8" y="236" width="300" height="40"/>
+                                        <rect key="frame" x="8" y="234" width="300" height="40"/>
                                         <color key="backgroundColor" red="0.1803921568627451" green="0.62352941176470589" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="VvR-z3-lux"/>
@@ -68,9 +60,9 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nw5-tD-cbK">
-                                        <rect key="frame" x="8" y="44" width="300" height="72"/>
+                                        <rect key="frame" x="8" y="44" width="300" height="70"/>
                                         <string key="text">Enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in.</string>
-                                        <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="15"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
