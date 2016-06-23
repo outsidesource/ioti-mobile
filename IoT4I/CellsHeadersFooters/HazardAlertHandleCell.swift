@@ -51,7 +51,7 @@ class HazardAlertHandleCell: UITableViewCell {
             self.lblName.text = event.title
             self.lblDesc.text = event.sensLocDesc
             self.lblTimestamp.text = "Triggered: " + Utils.DDMMYY_HHMM(event.timestamp)
-            self.imgEvent.image = UIImage(named: "hazardDefaultRed")!.imageWithRenderingMode(.AlwaysTemplate)
+            self.imgEvent.image = UIImage(named: "hazardDefaultNoBackground")!.imageWithRenderingMode(.AlwaysTemplate)
             
             if (event.isUrgent!.boolValue)
             {

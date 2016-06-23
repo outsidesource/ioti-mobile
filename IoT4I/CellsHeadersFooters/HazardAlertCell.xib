@@ -11,10 +11,10 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="186"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="185.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="186"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hazardDefaultBlue" translatesAutoresizingMaskIntoConstraints="NO" id="qxF-7q-dPG">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hazardDefaultRegular" translatesAutoresizingMaskIntoConstraints="NO" id="qxF-7q-dPG">
                         <rect key="frame" x="23" y="23" width="31" height="26"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="26" id="GT4-P7-Ia3"/>
@@ -184,7 +184,7 @@
     </objects>
     <resources>
         <image name="downArrow" width="16" height="10"/>
-        <image name="hazardDefaultBlue" width="36" height="36"/>
+        <image name="hazardDefaultRegular" width="31" height="26"/>
         <image name="timer" width="17" height="17"/>
     </resources>
 </document>
