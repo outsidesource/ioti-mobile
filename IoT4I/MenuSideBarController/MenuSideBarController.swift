@@ -161,10 +161,10 @@ class MenuSideBarController: UITableViewController {
             
             let window = self.view.window
 
-            MBProgressHUD.showHUDAddedTo(window,animated:true)
+            MBProgressHUD.showHUDAddedTo(window!,animated:true)
             iService.signOut({ (code) in
                 
-                MBProgressHUD.hideHUDForView(window,animated:true)
+                MBProgressHUD.hideHUDForView(window!,animated:true)
              
                 switch code {
                 case .Cancelled:

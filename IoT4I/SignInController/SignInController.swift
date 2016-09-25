@@ -123,10 +123,10 @@ class SignInController: UIViewController, UITextFieldDelegate {
         }
         
         let window = self.view.window
-        MBProgressHUD.showHUDAddedTo(window,animated:true)
+        MBProgressHUD.showHUDAddedTo(window!,animated:true)
         
         iService.signIn(self, username: user, password: password) { (code) -> Void in
-            MBProgressHUD.hideHUDForView(window,animated:true)
+            MBProgressHUD.hideHUDForView(window!,animated:true)
             
             switch code {
             case let .OK(data):

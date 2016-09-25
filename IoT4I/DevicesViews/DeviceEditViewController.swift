@@ -94,9 +94,9 @@ class DeviceEditViewController: UITableViewController, DeviceTypeDelegate {
             case 4:
 
                 let window = self.view.window
-                MBProgressHUD.showHUDAddedTo(window,animated:true)
+                MBProgressHUD.showHUDAddedTo(window!,animated:true)
                 iService.deleteDevicebyId(self, deviceId: self.device?.deviceId, completion: { (code) in
-                    MBProgressHUD.hideHUDForView(window,animated:true)
+                    MBProgressHUD.hideHUDForView(window!,animated:true)
                     switch code {
                     case .OK(_):
                         debugPrint("Delete Device OK")
@@ -130,10 +130,10 @@ class DeviceEditViewController: UITableViewController, DeviceTypeDelegate {
         passwordPrompt.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
 
             let window = self.view.window
-            MBProgressHUD.showHUDAddedTo(window,animated:true)
+            MBProgressHUD.showHUDAddedTo(window!,animated:true)
             
             iService.updateDevicebyId(self, deviceId: self.device?.deviceId, attributeName: deviceRow.attributeName, attributeValue: inputTextField?.text ?? "", completion: { (code) in
-                MBProgressHUD.hideHUDForView(window,animated:true)
+                MBProgressHUD.hideHUDForView(window!,animated:true)
                 switch code {
                 case .OK(_):
                     debugPrint("Edit Device OK")

@@ -92,9 +92,9 @@ class HazardDetailsViewController: UIViewController {
         }
 
         let window = self.view.window
-        MBProgressHUD.showHUDAddedTo(window,animated:true)
+        MBProgressHUD.showHUDAddedTo(window!,animated:true)
         iService.postHazardAction(self, hazardId: hazard.id!, hazardAction: operation) { (code) in
-            MBProgressHUD.hideHUDForView(window,animated:true)
+            MBProgressHUD.hideHUDForView(window!,animated:true)
             switch code {
             case .OK(_):
                 
