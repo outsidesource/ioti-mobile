@@ -221,7 +221,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("Device Token: \(deviceToken)")
         
         let push = IMFPushClient.sharedInstance()
-        push.registerDeviceToken(deviceToken, completionHandler: { (response, error) -> Void in
+            push.registerWithDeviceToken(deviceToken, completionHandler: { (response, error) -> Void in
             if error != nil {
                 print("Error during device registration \(error.description)")
             }
