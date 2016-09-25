@@ -255,10 +255,10 @@ class InsuranceUtils {
                             inManagedObjectContext:moc) as! Device
 
                         device.name = jsonDevice["name"] as? String ?? "Unknown"
-                        device.desc = jsonDevice["description"] as? String ?? "Unknown"
+                        device.desc = jsonDevice["model_name"] as? String ?? "Unknown"
                         device.location = jsonDevice["location"] as? String ?? "Unknown"
-                        device.image = jsonDevice["image"] as? String ?? ""
-                        device.deviceId = jsonDevice["id"] as? String ?? ""
+                        device.image = jsonDevice["image"] as? String ?? "defaultSensorIconBlue"
+                        device.deviceId = jsonDevice["_id"] as? String ?? ""
                         device.deviceType = jsonDevice["devicetype"] as? String ?? "Unknown"
                         device.activation =  Utils.parseTimestamp(jsonDevice["activation"] as? String ?? "2000-00-00T00:00:00,982Z")
  
@@ -325,7 +325,7 @@ class InsuranceUtils {
                         var nbInserted = 0
                         
                         for jsonHazardEvent in newHazardEvents {
-                            guard let id = jsonHazardEvent["id"] as? String else {
+                            guard let id = jsonHazardEvent["hazardid"] as? String else {
                                 DDLogError("No hazardEvent ID")
                                 continue
                             }

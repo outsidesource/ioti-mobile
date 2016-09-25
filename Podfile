@@ -10,8 +10,8 @@ pod 'CocoaLumberjack/Swift' ,'2.2.0'
 pod 'UICKeyChainStore'
 pod 'Reachability'
 pod 'DZNEmptyDataSet' ,'1.7.3'
-pod 'IMFCore'
-pod 'IMFPush'
+pod 'IMFCore' ,'1.0.0'
+pod 'IMFPush' ,'1.0.0'
 pod 'SWRevealViewController'
 end
 

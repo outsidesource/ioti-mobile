@@ -91,7 +91,7 @@ public class InsuranceService: NSObject
     
     public func deleteDevicebyId(delegate:AnyObject, deviceId:String?, completion: (code: HTTPOperationResult) -> Void)
     {
-        let requestPath = IMFClient.sharedInstance().backendRoute + "/device/" + (deviceId ?? "")
+        let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/device/" + (deviceId ?? "")
         let request = IMFResourceRequest(path: requestPath, method: kDelete)
         
         request.sendWithCompletionHandler { (response, error) -> Void in
@@ -118,7 +118,7 @@ public class InsuranceService: NSObject
     
     public func updateDevicebyId(delegate:AnyObject, deviceId:String?, attributeName:String?,  attributeValue:String?, completion: (code: HTTPOperationResult) -> Void)
     {
-        let requestPath = IMFClient.sharedInstance().backendRoute + "/device/" + (deviceId ?? "X") + "/" + (attributeName ?? "X") + "/" + (attributeValue ?? "X")
+        let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/device/" + (deviceId ?? "X") + "/" + (attributeName ?? "X") + "/" + (attributeValue ?? "X")
         let request = IMFResourceRequest(path: requestPath, method: kPost)
         
         request.sendWithCompletionHandler { (response, error) -> Void in

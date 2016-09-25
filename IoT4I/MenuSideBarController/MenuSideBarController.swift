@@ -107,8 +107,7 @@ class MenuSideBarController: UITableViewController {
         }
         
         do {
-            let userJson = json["imf.user"] as! [String:AnyObject]
-            sideMenuHeader.lblInfo.text = String(format: "%@ | %@", userJson["displayName"] as? String ?? "", "Policy 123456")
+            sideMenuHeader.lblInfo.text = String(format: "%@ | %@", json["displayName"] as? String ?? "", "Policy 123456")
         }
         
     }
