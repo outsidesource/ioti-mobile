@@ -1,38 +1,12 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
-{\fonttbl\f0\fmodern\fcharset0 CourierNewPSMT;\f1\froman\fcharset0 Times-Roman;}
-{\colortbl;\red255\green255\blue255;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
-\deftab720
-\pard\pardeftab720\sl280\qj\partightenfactor0
-
-\f0\fs24 \cf0 \expnd0\expndtw0\kerning0
 IBM Rational ABC Redistributables:
-\f1 \
-\'a0\
-
-\f0 The following list includes files that are provided to Licensee pursuant to the Redistributables section of the IBM International Program License Agreements License Information that applies to this Program:
-\f1 \
-\'a0\
-
-\f0 All source files in one the following list of directories (or subdirectories of these directories) may be compiled and redistributed in object form only:
-\f1 \
-
-\f0 - Not Applicable
-\f1 \
-\'a0\
-
-\f0 All SDL models in the following list of directories (or subdirectories of these directories) may be used for code generation followed by compilation to be redistributed in object form only:
-\f1 \
-\pard\pardeftab720\sl280\qj\partightenfactor0
-
-\f0 \cf0 - Not Applicable
-\f1 \
-\'a0\
-\pard\pardeftab720\sl280\qj\partightenfactor0
-
-\f0 \cf0 All object files in the following list of directories may be redistributed:
-\f1 \
-
-\f0 - <installation dir>\\IoT4I
-\f1 \
-}
+ 
+The following list includes files that are provided to Licensee pursuant to the Redistributables section of the IBM International Program License Agreements License Information that applies to this Program:
+ 
+All source files in one the following list of directories (or subdirectories of these directories) may be compiled and redistributed in object form only:
+- Not Applicable
+ 
+All SDL models in the following list of directories (or subdirectories of these directories) may be used for code generation followed by compilation to be redistributed in object form only:
+- Not Applicable
+ 
+All object files in the following list of directories may be redistributed:
+- <installation dir>\IoT4I
