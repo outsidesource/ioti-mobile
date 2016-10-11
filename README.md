@@ -2,6 +2,9 @@
 
 IoT for Insurance Starter Application is a Sample App written in Swift
 
+##License
+http://www14.software.ibm.com/cgi-bin/weblap/lap.pl?li_formnum=L-DDIN-ADQPWU&popup=y&title=IBM%20IoT%20for%20Insurance%20Sample%20Apps
+
 ## Overview
 
 IoT for Insurance Starter Application establishes a link between internet-of-things devices, insurance companies and insurance holders. The IBM IoT for Insurance Mobile application is a reference implementation for a mobile client of the IoT4I Solution. The application allows registering new devices in the system and receiving alerts for these devices
