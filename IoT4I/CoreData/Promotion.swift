@@ -45,18 +45,18 @@ import CoreData
 
 class Promotion: NSManagedObject {
 
-    static func getPromotions(moc:NSManagedObjectContext) throws -> [Promotion] {
-        let fetchRequest = NSFetchRequest(entityName: StringFromClass(Promotion))
+    static func getPromotions(_ moc:NSManagedObjectContext) throws -> [Promotion] {
+        let fetchRequest = NSFetchRequest<Promotion>(entityName: StringFromClass(Promotion.self))
         let idSortDescriptor = NSSortDescriptor(key: "id", ascending: false)
         let nameSortDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [idSortDescriptor, nameSortDescriptor]
         
         do {
-            let promotions = try moc.executeFetchRequest(fetchRequest) as! [Promotion]
+            let promotions = try moc.fetch(fetchRequest) 
             
             if (promotions.count <= 0)
             {
-                throw InsuranceError.NoEntitiesFound("None")
+                throw InsuranceError.noEntitiesFound("None")
             }
             
             return promotions

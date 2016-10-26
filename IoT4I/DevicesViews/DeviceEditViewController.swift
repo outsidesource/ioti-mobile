@@ -68,12 +68,12 @@ class DeviceEditViewController: UITableViewController, DeviceTypeDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         switch segue.identifier! {
         case "typeSegue":
             
-            let deviceTypeViewController = segue.destinationViewController as! DeviceTypeViewController
+            let deviceTypeViewController = segue.destination as! DeviceTypeViewController
             deviceTypeViewController.delegate = self
             break
             
@@ -85,21 +85,21 @@ class DeviceEditViewController: UITableViewController, DeviceTypeDelegate {
     
 
     // MARK: - Table view delegate
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        switch indexPath.row
+        switch (indexPath as NSIndexPath).row
         {
             
             case 0:
-                self.showTextAlert(DeviceRow.Name)
+                self.showTextAlert(DeviceRow.name)
                 break
             
             case 1:
-                self.showTextAlert(DeviceRow.DeviceType)
+                self.showTextAlert(DeviceRow.deviceType)
                 break
             
             case 2:
-                self.showTextAlert(DeviceRow.Location)
+                self.showTextAlert(DeviceRow.location)
                 break
             
             case 3:
@@ -110,21 +110,21 @@ class DeviceEditViewController: UITableViewController, DeviceTypeDelegate {
             case 4:
 
                 let window = self.view.window
-                MBProgressHUD.showHUDAddedTo(window!,animated:true)
+                MBProgressHUD.showAdded(to: window!,animated:true)
                 iService.deleteDevicebyId(self, deviceId: self.device?.deviceId, completion: { (code) in
-                    MBProgressHUD.hideHUDForView(window!,animated:true)
+                    MBProgressHUD.hide(for: window!,animated:true)
                     switch code {
-                    case .OK(_):
+                    case .ok(_):
                         debugPrint("Delete Device OK")
-                        self.navigationController?.popToRootViewControllerAnimated(true)
-                    case let .Error(error):
+                        _ = self.navigationController?.popToRootViewController(animated: true)
+                    case let .error(error):
                         let message = error.localizedDescription
                         DDLogError(message)
                         self.showError(message,title: "DeleteDevice.Alert.Title")
-                    case .HTTPStatus(let status,_):
-                        let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+                    case .httpStatus(let status,_):
+                        let message = HTTPURLResponse.localizedString(forStatusCode: status)
                         DDLogError(message)
-                    case .Cancelled:
+                    case .cancelled:
                         DDLogInfo("Delete Device Failed")
                     }
                     
@@ -137,29 +137,29 @@ class DeviceEditViewController: UITableViewController, DeviceTypeDelegate {
         }
     }
     
-    private func showTextAlert(deviceRow: DeviceRow)
+    fileprivate func showTextAlert(_ deviceRow: DeviceRow)
     {
         
         var inputTextField: UITextField?
-        let passwordPrompt = UIAlertController(title: "Attribute Edit", message: NSString(format: "You have selected to edit %@ attribute.", deviceRow.description) as String, preferredStyle: UIAlertControllerStyle.Alert)
-        passwordPrompt.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil))
-        passwordPrompt.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+        let passwordPrompt = UIAlertController(title: "Attribute Edit", message: NSString(format: "You have selected to edit %@ attribute.", deviceRow.description) as String, preferredStyle: UIAlertControllerStyle.alert)
+        passwordPrompt.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+        passwordPrompt.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
 
             let window = self.view.window
-            MBProgressHUD.showHUDAddedTo(window!,animated:true)
+            MBProgressHUD.showAdded(to: window!,animated:true)
             
             iService.updateDevicebyId(self, deviceId: self.device?.deviceId, attributeName: deviceRow.attributeName, attributeValue: inputTextField?.text ?? "", completion: { (code) in
-                MBProgressHUD.hideHUDForView(window!,animated:true)
+                MBProgressHUD.hide(for: window!,animated:true)
                 switch code {
-                case .OK(_):
+                case .ok(_):
                     debugPrint("Edit Device OK")
 
                     let moc = dataController.writerContext
-                    moc.performBlock {
+                    moc.perform {
                         
                         switch deviceRow
                         {
-                            case .Name:
+                            case .name:
                                 self.device?.name = inputTextField?.text ?? ""
                                 self.txtName.text = inputTextField?.text ?? ""
                                 break
@@ -169,12 +169,12 @@ class DeviceEditViewController: UITableViewController, DeviceTypeDelegate {
                                 self.txtDesc.text = inputTextField?.text ?? ""
                                 break
                             
-                            case .Location:
+                            case .location:
                                 self.device?.location = inputTextField?.text ?? ""
                                 self.txtLocation.text = inputTextField?.text ?? ""
                                 break
                             
-                            case .DeviceType:
+                            case .deviceType:
                                 self.device?.deviceType = inputTextField?.text ?? ""
                                 self.txtType.text = inputTextField?.text ?? ""
                                 break
@@ -187,14 +187,14 @@ class DeviceEditViewController: UITableViewController, DeviceTypeDelegate {
                         }
                     }
 
-                case let .Error(error):
+                case let .error(error):
                     let message = error.localizedDescription
                     DDLogError(message)
                     self.showError(message,title: "EditDevice.Alert.Title")
-                case .HTTPStatus(let status,_):
-                    let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+                case .httpStatus(let status,_):
+                    let message = HTTPURLResponse.localizedString(forStatusCode: status)
                     DDLogError(message)
-                case .Cancelled:
+                case .cancelled:
                     DDLogInfo("Edit Device Failed")
                 }
                 
@@ -202,28 +202,28 @@ class DeviceEditViewController: UITableViewController, DeviceTypeDelegate {
             
         }))
         
-        passwordPrompt.addTextFieldWithConfigurationHandler({(textField: UITextField!) in
+        passwordPrompt.addTextField(configurationHandler: {(textField: UITextField!) in
             textField.placeholder = ""
             inputTextField = textField
         })
         
-        presentViewController(passwordPrompt, animated: true, completion: nil)
+        present(passwordPrompt, animated: true, completion: nil)
     
     }
     
-    private func showError(message:String, title:String){
+    fileprivate func showError(_ message:String, title:String){
         
-        let alert = UIAlertController(title: NSLocalizedString(title,comment:"Delete Device Error"), message: message, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK Button"), style: .Default, handler: { (alertAction) -> Void in
+        let alert = UIAlertController(title: NSLocalizedString(title,comment:"Delete Device Error"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK Button"), style: .default, handler: { (alertAction) -> Void in
         }))
         
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
         
     }
     
     // MARK: - Device Type Delegate
     
-    func updateDeviceType(str: String) {
+    func updateDeviceType(_ str: String) {
         
     }
     

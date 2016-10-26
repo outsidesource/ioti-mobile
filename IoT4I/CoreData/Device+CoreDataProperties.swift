@@ -49,7 +49,7 @@ extension Device {
     @NSManaged var image: String?
     @NSManaged var deviceId: String?
     @NSManaged var deviceType: String?
-    @NSManaged var activation: NSDate?
+    @NSManaged var activation: Date?
     @NSManaged var shield: Shield?
 
 }

@@ -55,7 +55,7 @@ class TipCollectionViewCell: UICollectionViewCell {
             lblTitle.text = promotion.title
             lblDesc.text = promotion.desc
             imgTip.image = UIImage(named: promotion.image ?? "")
-            btnAction.setTitle(promotion.btnTitle, forState: .Normal)
+            btnAction.setTitle(promotion.btnTitle, for: UIControlState())
 
         }
     }
@@ -63,16 +63,16 @@ class TipCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        self.contentView.autoresizingMask.insert(.FlexibleHeight)
-        self.contentView.autoresizingMask.insert(.FlexibleWidth)
+        self.contentView.autoresizingMask.insert(.flexibleHeight)
+        self.contentView.autoresizingMask.insert(.flexibleWidth)
         self.contentView.translatesAutoresizingMaskIntoConstraints = true;
         
     }
     
     @IBAction func btnPressed()
     {
-        let url:NSURL = NSURL(string: String(format: "tel://%@", promotion.phone ?? ""))!
-        UIApplication.sharedApplication().openURL(url)
+        let url:URL = URL(string: String(format: "tel://%@", promotion.phone ?? ""))!
+        UIApplication.shared.openURL(url)
     }
 
 }

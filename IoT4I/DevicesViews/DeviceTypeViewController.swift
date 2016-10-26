@@ -42,7 +42,7 @@
 import UIKit
 
 protocol DeviceTypeDelegate {
-    func updateDeviceType(str: String)
+    func updateDeviceType(_ str: String)
 }
 
 class DeviceTypeViewController: UITableViewController {
@@ -53,7 +53,7 @@ class DeviceTypeViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableView.registerNib(UINib(nibName: "DeviceTypeViewCell", bundle: nil), forCellReuseIdentifier: "DeviceTypeViewCellID")
+        self.tableView.register(UINib(nibName: "DeviceTypeViewCell", bundle: nil), forCellReuseIdentifier: "DeviceTypeViewCellID")
         self.title = "Type"
         
     }
@@ -63,20 +63,20 @@ class DeviceTypeViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("DeviceTypeViewCellID", forIndexPath: indexPath) as! DeviceTypeViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceTypeViewCellID", for: indexPath) as! DeviceTypeViewCell
         
-        switch indexPath.row {
+        switch (indexPath as NSIndexPath).row {
         case 0:
             cell.lblType.text = "Water Detection"
             break
@@ -90,7 +90,7 @@ class DeviceTypeViewController: UITableViewController {
         // change to device type
         if (device?.name == cell.lblType.text)
         {
-            cell.accessoryType = .Checkmark
+            cell.accessoryType = .checkmark
         }
         
         return cell
@@ -98,12 +98,12 @@ class DeviceTypeViewController: UITableViewController {
  
     // MARK: - Table view delegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        let cell = tableView.dequeueReusableCellWithIdentifier("DeviceTypeViewCellID", forIndexPath: indexPath) as! DeviceTypeViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceTypeViewCellID", for: indexPath) as! DeviceTypeViewCell
         delegate!.updateDeviceType(cell.lblType.text!)
         
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
         
     }
     

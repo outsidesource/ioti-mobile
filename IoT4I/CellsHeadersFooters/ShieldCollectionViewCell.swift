@@ -40,6 +40,26 @@
 
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class ShieldCollectionViewCell: UICollectionViewCell {
 
@@ -71,7 +91,7 @@ class ShieldCollectionViewCell: UICollectionViewCell {
             
             if urgentHazardsCount > 0
             {
-                viewBadge.hidden = false
+                viewBadge.isHidden = false
                 imgBadge.setUrgentBackgroundImage()
                 lblBadge.text = String(format: "%d", urgentHazardsCount!)
                 name.setRedHazardousBackground()
@@ -80,14 +100,14 @@ class ShieldCollectionViewCell: UICollectionViewCell {
             }
             else if regularHazardsCount > 0
             {
-                viewBadge.hidden = false
+                viewBadge.isHidden = false
                 imgBadge.setHazardousBackgroundImage()
                 lblBadge.text = String(format: "%d", regularHazardsCount!)
                 name.setOrangeHazardousBackground()
             }
             else
             {
-                viewBadge.hidden = true
+                viewBadge.isHidden = true
                 lblBadge.text = ""
                 imgBadge.clearImage()
                 name.clearBackgroundColor()
@@ -106,12 +126,12 @@ class ShieldCollectionViewCell: UICollectionViewCell {
     func animateUrgentHazards()
     {
         let duration = 0.5
-        UIView.animateWithDuration(duration / 2, delay: 0.0, options: [.BeginFromCurrentState , .CurveEaseInOut], animations: {
-            self.imgBadge.transform = CGAffineTransformMakeScale(1 / self.shrinkSize, 1 / self.shrinkSize)
+        UIView.animate(withDuration: duration / 2, delay: 0.0, options: .beginFromCurrentState, animations: {
+            self.imgBadge.transform = CGAffineTransform(scaleX: 1 / self.shrinkSize, y: 1 / self.shrinkSize)
             }, completion: { finished in
 
-                UIView.animateWithDuration(duration / 2, delay: 0.0, options: [.BeginFromCurrentState , .CurveEaseInOut], animations: {
-                    self.imgBadge.transform = CGAffineTransformMakeScale(self.shrinkSize, self.shrinkSize)
+                UIView.animate(withDuration: duration / 2, delay: 0.0, options: .beginFromCurrentState, animations: {
+                    self.imgBadge.transform = CGAffineTransform(scaleX: self.shrinkSize, y: self.shrinkSize)
                         
                     }, completion: { _ in
                         

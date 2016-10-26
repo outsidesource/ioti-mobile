@@ -58,34 +58,34 @@ class TipsCollectionController: UIViewController, UICollectionViewDelegate, UICo
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: tipsCollectionViewCell)
+        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: tipsCollectionViewCell)
         let moc = dataController.writerContext
         tipsJson = try? Promotion.getPromotions(moc)
 
-        self.collectionView!.registerNib(UINib(nibName: "TipCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: tipsCollectionViewCell)
+        self.collectionView!.register(UINib(nibName: "TipCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: tipsCollectionViewCell)
         self.automaticallyAdjustsScrollViewInsets = false
         self.collectionView!.backgroundColor = UIColor(colorLiteralRed: (229.0/255.0), green: (229.0/255.0), blue: (229.0/255.0), alpha: 1.0)
  
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TipsCollectionController.reloadView), name: kReloadPromotionView, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TipsCollectionController.reloadView), name: NSNotification.Name(rawValue: kReloadPromotionView), object: nil)
         
         if (!didLoadPromotions)
         {
-            MBProgressHUD.showHUDAddedTo(self.view,animated:true)
+            MBProgressHUD.showAdded(to: self.view,animated:true)
         }
         
     }
     
-    func reloadView(notification:NSNotification) {
+    func reloadView(_ notification:Notification) {
         
         let moc = dataController.writerContext
         tipsJson = try? Promotion.getPromotions(moc)
         
         self.collectionView.reloadData()
         
-        MBProgressHUD.hideHUDForView(self.view, animated: true)
+        MBProgressHUD.hide(for: self.view, animated: true)
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.scrollViewDidEndDecelerating(self.collectionView!)
     }
     
@@ -95,20 +95,20 @@ class TipsCollectionController: UIViewController, UICollectionViewDelegate, UICo
 
     // MARK: UICollectionViewDataSource
 
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        showHideLeftRightButtons(NSIndexPath(forRow: 0, inSection: 0))
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        showHideLeftRightButtons(IndexPath(row: 0, section: 0))
         return tipsJson?.count ?? 0
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(tipsCollectionViewCell, forIndexPath: indexPath) as! TipCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tipsCollectionViewCell, for: indexPath) as! TipCollectionViewCell
     
-        cell.promotion = tipsJson![indexPath.row]
+        cell.promotion = tipsJson![(indexPath as NSIndexPath).row]
         cell.setNeedsLayout()
         cell.layoutIfNeeded()
         
@@ -117,16 +117,16 @@ class TipsCollectionController: UIViewController, UICollectionViewDelegate, UICo
 
     // MARK: UICollectionViewDelegate
 
-    func collectionView(collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                               sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+                               sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
         
-        let size:CGSize = CGSizeMake(self.collectionView!.frame.width, self.collectionView!.frame.height)
+        let size:CGSize = CGSize(width: self.collectionView!.frame.width, height: self.collectionView!.frame.height)
         return size
         
     }
     
-    func collectionView(collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(0, 0, 0, 0)
@@ -139,15 +139,15 @@ extension TipsCollectionController: UIScrollViewDelegate{
     @IBAction func leftClicked()
     {
         
-        let currentIndexPath = self.collectionView.indexPathForCell(self.collectionView!.visibleCells().first!)
+        let currentIndexPath = self.collectionView.indexPath(for: self.collectionView!.visibleCells.first!)
         
-        if currentIndexPath!.row == 0
+        if (currentIndexPath! as NSIndexPath).row == 0
         {
             return
         }
         
-        let previousIndexPath = NSIndexPath(forRow: currentIndexPath!.row - 1, inSection: 0)
-        self.collectionView!.scrollToItemAtIndexPath(previousIndexPath, atScrollPosition: .CenteredHorizontally, animated: true)
+        let previousIndexPath = IndexPath(row: (currentIndexPath! as NSIndexPath).row - 1, section: 0)
+        self.collectionView!.scrollToItem(at: previousIndexPath, at: .centeredHorizontally, animated: true)
         self.scrollViewDidEndDecelerating(self.collectionView!)
         
         self.showHideLeftRightButtons(previousIndexPath)
@@ -156,30 +156,30 @@ extension TipsCollectionController: UIScrollViewDelegate{
     @IBAction func rightClicked()
     {
         
-        let currentIndexPath = self.collectionView.indexPathForCell(self.collectionView!.visibleCells().first!)
+        let currentIndexPath = self.collectionView.indexPath(for: self.collectionView!.visibleCells.first!)
         
-        if currentIndexPath!.row == (tipsJson?.count)! - 1
+        if (currentIndexPath! as NSIndexPath).row == (tipsJson?.count)! - 1
         {
             return
         }
         
-        let nextIndexPath = NSIndexPath(forRow: currentIndexPath!.row + 1, inSection: 0)
-        self.collectionView!.scrollToItemAtIndexPath(nextIndexPath, atScrollPosition: .CenteredHorizontally, animated: true)
+        let nextIndexPath = IndexPath(row: (currentIndexPath! as NSIndexPath).row + 1, section: 0)
+        self.collectionView!.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
         
         self.showHideLeftRightButtons(nextIndexPath)
         
     }
     
-    func showHideLeftRightButtons(indexPath: NSIndexPath)
+    func showHideLeftRightButtons(_ indexPath: IndexPath)
     {
-        btnLeft.hidden = indexPath.row == 0
-        btnRight.hidden = indexPath.row == (tipsJson?.count ?? 1)! - 1
+        btnLeft.isHidden = (indexPath as NSIndexPath).row == 0
+        btnRight.isHidden = (indexPath as NSIndexPath).row == (tipsJson?.count ?? 1)! - 1
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView)
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView)
     {
-        btnLeft.hidden = scrollView.contentOffset.x == 0.0
-        btnRight.hidden = scrollView.contentOffset.x == CGFloat((tipsJson?.count ?? 1) - 1) * self.collectionView!.frame.width
+        btnLeft.isHidden = scrollView.contentOffset.x == 0.0
+        btnRight.isHidden = scrollView.contentOffset.x == CGFloat((tipsJson?.count ?? 1) - 1) * self.collectionView!.frame.width
         
     }
 }

@@ -58,7 +58,7 @@ class ShieldsViewController: UIViewController {
             revealViewController().rearViewRevealWidth = 315
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ShieldsViewController.updateTitle), name: kUpdateShieldsTitle, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ShieldsViewController.updateTitle), name: NSNotification.Name(rawValue: kUpdateShieldsTitle), object: nil)
         
         self.updateTitle()
         
@@ -68,13 +68,12 @@ class ShieldsViewController: UIViewController {
     {
         let moc = dataController.mainContext
         
-        let fetchRequest = NSFetchRequest(entityName: StringFromClass(HazardEvent))
+        let fetchRequest = NSFetchRequest<HazardEvent>(entityName: StringFromClass(HazardEvent.self))
         fetchRequest.predicate = NSPredicate(format: "isHandled == false AND isUrgent == true")
         
-        var error:NSError? = nil
-        let count = moc.countForFetchRequest(fetchRequest, error: &error)
+        let count = try? moc.count(for: fetchRequest)
         if count == NSNotFound {
-            debugPrint("Core Data Error \(error)")
+            debugPrint("Core Data Error, ShieldsViewController updateTitle()")
         } else {
             
             if count != 0
@@ -83,13 +82,12 @@ class ShieldsViewController: UIViewController {
             }
             else
             {
-                let fetchRequest = NSFetchRequest(entityName: StringFromClass(HazardEvent))
+                let fetchRequest = NSFetchRequest<HazardEvent>(entityName: StringFromClass(HazardEvent.self))
                 fetchRequest.predicate = NSPredicate(format: "isHandled == false AND isUrgent == false")
                 
-                var error:NSError? = nil
-                let count = moc.countForFetchRequest(fetchRequest, error: &error)
+                let count = try? moc.count(for: fetchRequest)
                 if count == NSNotFound {
-                    debugPrint("Core Data Error \(error)")
+                    debugPrint("Core Data Error, ShieldsViewController updateTitle()")
                 } else {
                     
                     lblTitle.text = (count != 0) ? "An issue needs your attention" : "Your house is fully protected!"

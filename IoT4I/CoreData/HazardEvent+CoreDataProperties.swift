@@ -53,11 +53,11 @@ extension HazardEvent {
     @NSManaged var locationDesc: String?
     @NSManaged var longitude: NSNumber?
     @NSManaged var sensorDesc: String?
-    @NSManaged var timestamp: NSDate?
+    @NSManaged var timestamp: Date?
     @NSManaged var title: String?
     @NSManaged var handledOperation:String?
     @NSManaged var handledBy: String?
-    @NSManaged var handledAt: NSDate?
+    @NSManaged var handledAt: Date?
     @NSManaged var shield: Shield?
 
 }

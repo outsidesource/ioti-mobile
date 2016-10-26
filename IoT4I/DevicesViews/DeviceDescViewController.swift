@@ -72,14 +72,14 @@ class DeviceDescViewController: UIViewController {
     
     @IBAction func editClicked()
     {
-        self.performSegueWithIdentifier("editSegue", sender: nil)
+        self.performSegue(withIdentifier: "editSegue", sender: nil)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         switch segue.identifier! {
         case "editSegue":
-            let devEdit = segue.destinationViewController as! DeviceEditViewController
+            let devEdit = segue.destination as! DeviceEditViewController
             devEdit.device = device
             break
             
@@ -91,12 +91,12 @@ class DeviceDescViewController: UIViewController {
     
     @IBAction func dismiss()
     {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func done()
     {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
 }

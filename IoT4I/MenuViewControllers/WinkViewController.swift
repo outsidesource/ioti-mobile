@@ -52,7 +52,7 @@ class WinkViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(WinkViewController.winkConnectionStateChanged), name: kWinkConnectionStateChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(WinkViewController.winkConnectionStateChanged), name: NSNotification.Name(rawValue: kWinkConnectionStateChanged), object: nil)
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -67,8 +67,8 @@ class WinkViewController: UIViewController {
     {
         if (UserPreferences.tokenWink != nil)
         {
-            connectWink.setTitle("Reconnect to Wink", forState: .Normal)
-            connectWink.enabled = true
+            connectWink.setTitle("Reconnect to Wink", for: UIControlState())
+            connectWink.isEnabled = true
             connectWink.alpha = 1.0
         }
     }
@@ -80,7 +80,7 @@ class WinkViewController: UIViewController {
     
     @IBAction func loginWink()
     {
-        UIApplication.sharedApplication().openURL(NSURL(string: "https://api.wink.com/oauth2/authorize?response_type=code&client_id=42b1a17078254c9b73257133eb9bb3ae&redirect_uri=ibminsurance://app&state=123")!)
+        UIApplication.shared.openURL(URL(string: "https://api.wink.com/oauth2/authorize?response_type=code&client_id=42b1a17078254c9b73257133eb9bb3ae&redirect_uri=ibminsurance://app&state=123")!)
     }
     
 }

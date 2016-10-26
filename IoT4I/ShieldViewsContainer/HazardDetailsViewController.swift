@@ -59,10 +59,10 @@ class HazardDetailsViewController: UIViewController {
         super.viewDidLoad()
 
         dismissButton.target = self
-        dismissButton.action = #selector(HazardDetailsViewController.dismiss)
+        dismissButton.action = #selector(HazardDetailsViewController.dismissAction)
         
         let attrNavigationTitle: [String : AnyObject] = [
-            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSForegroundColorAttributeName: UIColor.white,
             NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 17.0)!
         ]
         
@@ -76,12 +76,12 @@ class HazardDetailsViewController: UIViewController {
         self.imgShield.image = UIImage(named: hazard.shield?.image ?? "")
     }
     
-    func dismiss()
+    func dismissAction()
     {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func actionClicked(btn: UIButton!)
+    @IBAction func actionClicked(_ btn: UIButton!)
     {
         
         var operation:String
@@ -108,17 +108,17 @@ class HazardDetailsViewController: UIViewController {
         }
 
         let window = self.view.window
-        MBProgressHUD.showHUDAddedTo(window!,animated:true)
+        MBProgressHUD.showAdded(to: window!,animated:true)
         iService.postHazardAction(self, hazardId: hazard.id!, hazardAction: operation) { (code) in
-            MBProgressHUD.hideHUDForView(window!,animated:true)
+            MBProgressHUD.hide(for: window!,animated:true)
             switch code {
-            case .OK(_):
+            case .ok(_):
                 
                 let moc = dataController.writerContext
-                moc.performBlock {
+                moc.perform {
                     
                     self.hazard.isHandled = true
-                    self.hazard.handledAt = NSDate()
+                    self.hazard.handledAt = Date()
                     self.hazard.handledOperation = operation
                     self.hazard.handledBy = UserPreferences.username
                     
@@ -128,26 +128,26 @@ class HazardDetailsViewController: UIViewController {
                         DDLogError("Core Data Error \(error)")
                     }
                     
-                    self.dismiss()
+                    self.dismissAction()
                 }
                 
-            case let .Error(error):
+            case let .error(error):
                 let message = error.localizedDescription
                 DDLogError(message)
-            case .HTTPStatus(let status,_):
-                let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+            case .httpStatus(let status,_):
+                let message = HTTPURLResponse.localizedString(forStatusCode: status)
                 DDLogError(message)
-            case .Cancelled:
+            case .cancelled:
                 DDLogInfo("SignIn Cancelled")
             }
         }
         
     }
     
-    func call(phone: String?)
+    func call(_ phone: String?)
     {
-        let url:NSURL = NSURL(string: String(format: "tel://%@", phone ?? ""))!
-        UIApplication.sharedApplication().openURL(url)
+        let url:URL = URL(string: String(format: "tel://%@", phone ?? ""))!
+        UIApplication.shared.openURL(url)
     }
     
     override func didReceiveMemoryWarning() {

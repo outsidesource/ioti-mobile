@@ -43,9 +43,9 @@ import UIKit
 
 enum DeviceRow:Int {
     
-    case Name = 0
-    case DeviceType = 1
-    case Location = 2
+    case name = 0
+    case deviceType = 1
+    case location = 2
     case Description = 3
     
 }
@@ -55,11 +55,11 @@ extension DeviceRow {
     var description:String {
         get {
             switch self {
-            case .Name:
+            case .name:
                 return "Name"
-            case .DeviceType:
+            case .deviceType:
                 return "Type"
-            case .Location:
+            case .location:
                 return "Location"
             case .Description:
                 return "Description"
@@ -76,11 +76,11 @@ extension DeviceRow {
     var attributeName:String {
         get {
             switch self {
-            case .Name:
+            case .name:
                 return "name"
-            case .DeviceType:
+            case .deviceType:
                 return "deviceType"
-            case .Location:
+            case .location:
                 return "location"
             case .Description:
                 return "description"

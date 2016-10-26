@@ -48,36 +48,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var pushHazardEvent:HazardEvent?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         UITabBar.appearance().barTintColor = Insurance_barTintColor
-        UITabBar.appearance().tintColor = UIColor.whiteColor()
+        UITabBar.appearance().tintColor = UIColor.white
         
-        UISegmentedControl.appearance().tintColor = UIColor.clearColor()
+        UISegmentedControl.appearance().tintColor = UIColor.clear
         
-        let attrNormal: [NSObject : AnyObject] = [
+        let attrNormal: [AnyHashable: Any] = [
             NSForegroundColorAttributeName: UIColor(red: (255.0/255.0), green: (255.0/255.0), blue: (255.0/255.0), alpha: 0.8),
             NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 16.0)!
         ]
         
-        UISegmentedControl.appearance().setTitleTextAttributes(attrNormal as [NSObject : AnyObject] , forState: .Normal)
+        UISegmentedControl.appearance().setTitleTextAttributes(attrNormal as [AnyHashable: Any] , for: UIControlState())
         
-        let attrSelected: [NSObject : AnyObject] = [
+        let attrSelected: [AnyHashable: Any] = [
             NSForegroundColorAttributeName: UIColor(red: (255.0/255.0), green: (255.0/255.0), blue: (255.0/255.0), alpha: 1.0),
             NSFontAttributeName: UIFont(name: "HelveticaNeue-Medium", size: 16.0)!
         ]
         
-        UISegmentedControl.appearance().setTitleTextAttributes(attrSelected as [NSObject : AnyObject] , forState: .Selected)
+        UISegmentedControl.appearance().setTitleTextAttributes(attrSelected as [AnyHashable: Any] , for: .selected)
         
-        UIBarButtonItem.appearance().tintColor = UIColor.whiteColor()
+        UIBarButtonItem.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().barTintColor = Insurance_barTintColor
         UINavigationBar.appearance().tintColor = barTintColor
         UIToolbar.appearance().barTintColor = Insurance_barTintColor
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         
         
-        DDLog.addLogger(DDTTYLogger.sharedInstance()) // TTY = Xcode console
-        DDLog.addLogger(DDASLLogger.sharedInstance()) // ASL = Apple System Logs
+        DDLog.add(DDTTYLogger.sharedInstance()) // TTY = Xcode console
+        DDLog.add(DDASLLogger.sharedInstance()) // ASL = Apple System Logs
         
         // http://stackoverflow.com/questions/6411549/where-is-logfile-stored-using-cocoalumberjack
         let documentsFileManager = DDLogFileManagerDefault(logsDirectory:Utils.documentsDirectory.path)
@@ -85,9 +85,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let fileLogger: DDFileLogger = DDFileLogger(logFileManager: documentsFileManager) // File Logger
         fileLogger.rollingFrequency = 60*60*24  // 24 hours
         fileLogger.logFileManager.maximumNumberOfLogFiles = 7
-        DDLog.addLogger(fileLogger)
+        DDLog.add(fileLogger)
         
-        UIApplication.sharedApplication().idleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = true
         
         let sb = UIStoryboard(name:"SignInController",bundle:nil)
         let vc = sb.instantiateInitialViewController()
@@ -99,25 +99,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func printFonts() {
-        let fontFamilyNames = UIFont.familyNames()
+        let fontFamilyNames = UIFont.familyNames
         for familyName in fontFamilyNames {
             print("Font Family Name = [\(familyName)]")
-            let names = UIFont.fontNamesForFamilyName(familyName)
+            let names = UIFont.fontNames(forFamilyName: familyName)
             print("Font Names = [\(names)]")
         }
     }
 
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
         
         if iService.didSignedIn {
@@ -128,36 +128,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
 //        self.saveContext()
     }
 
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool
     {
         
         var queryStrings = [String: String]()
         if let query = url.query {
-            for qs in query.componentsSeparatedByString("&") {
+            for qs in query.components(separatedBy: "&") {
                 // Get the parameter name
-                let key = qs.componentsSeparatedByString("=")[0]
+                let key = qs.components(separatedBy: "=")[0]
                 // Get the parameter value
-                var value = qs.componentsSeparatedByString("=")[1]
-                value = value.stringByReplacingOccurrencesOfString("+", withString: " ")
+                var value = qs.components(separatedBy: "=")[1]
+                value = value.replacingOccurrences(of: "+", with: " ")
 //                value = value.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-                value = value.stringByRemovingPercentEncoding!
+//                value = value.stringByRemovingPercentEncoding!
+                value = value.removingPercentEncoding!
                 
                 queryStrings[key] = value
             }
         }
         
         UserPreferences.tokenWink = queryStrings["code"]
-        NSNotificationCenter.defaultCenter().postNotificationName(kWinkConnectionStateChanged, object: self,userInfo:nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: kWinkConnectionStateChanged), object: self,userInfo:nil)
         
         self.postWinkToken()
         
@@ -172,15 +173,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         iService.postWinkToken(self, token: token) { (code) -> Void in
             switch code {
-            case .OK(_):
+            case .ok(_):
                 debugPrint("OK")
-            case let .Error(error):
+            case let .error(error):
                 let message = error.localizedDescription
                 DDLogError(message)
-            case .HTTPStatus(let status,_):
-                let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+            case .httpStatus(let status,_):
+                let message = HTTPURLResponse.localizedString(forStatusCode: status)
                 DDLogError(message)
-            case .Cancelled:
+            case .cancelled:
                 DDLogInfo("Wink Token Failed")
             }
   
@@ -193,12 +194,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         debugPrint("gotoInitialController")
         
         self.fetchHazards()
-        let window = UIApplication.sharedApplication().delegate?.window!
+        let window = UIApplication.shared.delegate?.window!
         
         let sb = UIStoryboard(name:"MenuManagerStoryboard",bundle:nil)
         let vc = sb.instantiateInitialViewController()
         
-        UIView.transitionWithView(window!, duration: 0.5, options: .TransitionCrossDissolve, animations: { () -> Void in
+        UIView.transition(with: window!, duration: 0.5, options: .transitionCrossDissolve, animations: { () -> Void in
             UIView.performWithoutAnimation({ () -> Void in
                 window!.rootViewController = vc
             })
@@ -208,23 +209,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static func updateApplicationBadge() {
         let moc = dataController.mainContext
         
-        let fetchRequest = NSFetchRequest(entityName: StringFromClass(HazardEvent))
+        let fetchRequest = NSFetchRequest<HazardEvent>(entityName: StringFromClass(HazardEvent.self))
         fetchRequest.predicate = NSPredicate(format: "isHandled == false")
         
-        var error:NSError? = nil
-        let count = moc.countForFetchRequest(fetchRequest, error: &error)
+        let count = try? moc.count(for: fetchRequest)
         if count == NSNotFound {
-            DDLogError("Core Data Error \(error)")
+            DDLogError("Core Data Error, AppDelegate updateApplicationBadge")
         } else {
-            UIApplication.sharedApplication().applicationIconBadgeNumber = count
+            UIApplication.shared.applicationIconBadgeNumber = count!
         }
         
-        let window = UIApplication.sharedApplication().delegate?.window!
+        let window = UIApplication.shared.delegate?.window!
         if let tbc = window?.rootViewController as? UITabBarController {
             if count == 0 {
                 tbc.tabBar.items![1].badgeValue = nil
             } else {
-                tbc.tabBar.items![1].badgeValue = String(count)
+                tbc.tabBar.items![1].badgeValue = String(describing: count)
             }
         }
         
@@ -232,50 +232,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     //MARK: APN
     
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
         DDLogInfo("Device Token: \(deviceToken)")
         
         let push = IMFPushClient.sharedInstance()
-            push.registerWithDeviceToken(deviceToken, completionHandler: { (response, error) -> Void in
+            push?.register(withDeviceToken: deviceToken, completionHandler: { (response, error) -> Void in
             if error != nil {
-                print("Error during device registration \(error.description)")
+                print("Error during device registration \(error.debugDescription)")
             }
             else {
-                let json = response.responseJson
-                if let deviceId = json["deviceId"] as? String {
+                let json = response?.responseJson
+                if let deviceId = json?["deviceId"] as? String {
                     lastDeviceId = deviceId
                 } else {
                     DDLogError("Missing Device Id for push registration")
                 }
                 
-                print("Response during device registration json: \(response.responseJson.description)")
+                print("Response during device registration json: \(response?.responseJson.description)")
             }
         })
     }
     
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError){
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error){
         
         DDLogError("APNS Registration Error \(error)")
         
     }
     
-    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [NSObject : AnyObject], completionHandler: () -> Void) {
+    func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) {
         
         DDLogInfo("handleActionWithIdentifier: \(identifier)")
         completionHandler()
         
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         
         print(userInfo)
         
         DDLogInfo("didReceiveRemoteNotification \(userInfo)")
-        DDLogInfo("applicationState:\(UIApplication.sharedApplication().applicationState.rawValue)")
+        DDLogInfo("applicationState:\(UIApplication.shared.applicationState.rawValue)")
         
-        switch UIApplication.sharedApplication().applicationState {
-        case .Active:
+        switch UIApplication.shared.applicationState {
+        case .active:
             guard let aps = userInfo["aps"] as? [String:AnyObject] else {
                 DDLogError("didReceiveRemoteNotification \(userInfo)")
                 break
@@ -295,8 +295,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 break
             }
             
-            let data: NSData = payload.dataUsingEncoding(NSUTF8StringEncoding)!
-            guard let json:[String : AnyObject] = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! [String : AnyObject] else
+            let data: Data = payload.data(using: String.Encoding.utf8)!
+            guard let json:[String : AnyObject] = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String : AnyObject] else
             {
                 DDLogError("didReceiveRemoteNotification /Users/amjadn\(userInfo)")
                 break
@@ -310,47 +310,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    private func showHazardEvent()
+    fileprivate func showHazardEvent()
     {
         
         let storyboard : UIStoryboard = UIStoryboard(name: "HazardDetailsStoryboard", bundle: nil)
         let vc = storyboard.instantiateInitialViewController() as! UINavigationController
         (vc.topViewController as! HazardDetailsViewController).hazard = pushHazardEvent
         
-        window?.rootViewController?.presentViewController(vc, animated: true, completion: nil)
+        window?.rootViewController?.present(vc, animated: true, completion: nil)
     }
     
-    func showErrorNotification(message:String)
+    func showErrorNotification(_ message:String)
     {
-        let alert = UIAlertController(title: NSLocalizedString("Home Insurance",comment:""), message: message, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok Button"), style: .Default, handler: { (alertAction) -> Void in
+        let alert = UIAlertController(title: NSLocalizedString("Home Insurance",comment:""), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok Button"), style: .default, handler: { (alertAction) -> Void in
         }))
         
-        window?.rootViewController
-        window?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+        window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
-    func showHazardNotification(message:String, hazardEvent:HazardEvent)
+    func showHazardNotification(_ message:String, hazardEvent:HazardEvent)
     {
         self.pushHazardEvent = hazardEvent
         
-        if ((window?.rootViewController?.presentedViewController as? UINavigationController)?.topViewController?.isKindOfClass(HazardDetailsViewController) == true)
+        if ((window?.rootViewController?.presentedViewController as? UINavigationController)?.topViewController?.isKind(of: HazardDetailsViewController.self) == true)
         {
             debugPrint("HazardDetailsViewController already visible")
             
             return
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
-            let alert = UIAlertController(title: NSLocalizedString("Home Insurance",comment:""), message: message, preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Show", comment: "Show Button"), style: .Default, handler: { (alertAction) -> Void in
+        DispatchQueue.main.async(execute: {
+            let alert = UIAlertController(title: NSLocalizedString("Home Insurance",comment:""), message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Show", comment: "Show Button"), style: .default, handler: { (alertAction) -> Void in
                 self.showHazardEvent()
             }))
             
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Dismiss", comment: "Dismiss Button"), style: .Cancel, handler: { (alertAction) -> Void in
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Dismiss", comment: "Dismiss Button"), style: .cancel, handler: { (alertAction) -> Void in
             }))
             
-            self.window?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+            self.window?.rootViewController?.present(alert, animated: true, completion: nil)
         })
 
     }
@@ -359,8 +358,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     static func fetchHazards() {
         
-        let lockQueue = dispatch_queue_create("com.test.LockQueue", nil)
-        dispatch_sync(lockQueue) {
+        let lockQueue = DispatchQueue(label: "com.test.LockQueue", attributes: [])
+        lockQueue.sync {
             dataController.removeStore()
         }
 

@@ -43,16 +43,16 @@ import Foundation
 import CoreData
 
 public enum ShieldUUID:Int {
-    case ExcessiveTemperatureExposure = 8
-    case FallProtection = 2
-    case HeatStress = 11
-    case PanicButton = 9
-    case HighHeartRateMonitoring = 4
-    case HelmetIsOffMonitoring = 5
-    case FallProtectioniOS = 1
-    case MSBandShields = 7
-    case ImpactDetection = 14
-    case GasDetection = 15
+    case excessiveTemperatureExposure = 8
+    case fallProtection = 2
+    case heatStress = 11
+    case panicButton = 9
+    case highHeartRateMonitoring = 4
+    case helmetIsOffMonitoring = 5
+    case fallProtectioniOS = 1
+    case msBandShields = 7
+    case impactDetection = 14
+    case gasDetection = 15
 }
 
 @objc(Shield)
@@ -93,19 +93,19 @@ extension Shield {
         return d
     }
     
-    static func getShieldWithUUID(shieldUUID:String,moc:NSManagedObjectContext) throws -> Shield {
-        let fetchRequest = NSFetchRequest(entityName: StringFromClass(Shield))
+    static func getShieldWithUUID(_ shieldUUID:String,moc:NSManagedObjectContext) throws -> Shield {
+        let fetchRequest = NSFetchRequest<Shield>(entityName: StringFromClass(Shield.self))
         fetchRequest.predicate = NSPredicate(format: "uuid = %@", shieldUUID)
         
         do {
-            let shields = try moc.executeFetchRequest(fetchRequest) as! [Shield]
+            let shields = try moc.fetch(fetchRequest) 
             switch shields.count {
             case 0:
-                throw InsuranceError.EntityNotFound(shieldUUID)
+                throw InsuranceError.entityNotFound(shieldUUID)
             case 1:
                 return shields.first!
             default:
-                throw InsuranceError.MoreThanOneEntity(shieldUUID)
+                throw InsuranceError.moreThanOneEntity(shieldUUID)
                 
             }
         } catch {

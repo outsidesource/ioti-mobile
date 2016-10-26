@@ -46,14 +46,14 @@ import UICKeyChainStore
 
 public enum SideMenu {
     
-    case Overview
-    case Policy
-    case Empty
-    case Shields
-    case Devices
-    case Domains
-    case WinkAccount
-    case Logout
+    case overview
+    case policy
+    case empty
+    case shields
+    case devices
+    case domains
+    case winkAccount
+    case logout
     
 }
 
@@ -62,30 +62,30 @@ extension SideMenu {
     init(rawValue: Int) {
         switch rawValue {
             
-        case 0: self = .Overview
-        case 1: self = . Policy
-        case 2: self = . Empty
-        case 3: self = . Shields
-        case 4: self = . Devices
-        case 5: self = . Domains
-        case 6: self = . WinkAccount
-        case 7: self = . Logout
-        default: self = .Shields
+        case 0: self = .overview
+        case 1: self = . policy
+        case 2: self = . empty
+        case 3: self = . shields
+        case 4: self = . devices
+        case 5: self = . domains
+        case 6: self = . winkAccount
+        case 7: self = . logout
+        default: self = .shields
         }
     }
     
-    static var count: Int { return SideMenu.Logout.hashValue + 1}
+    static var count: Int { return SideMenu.logout.hashValue + 1}
     
     var description : String {
         switch self {
-            case .Overview: return "Overview"
-            case .Policy: return "Policy"
-            case .Empty: return ""
-            case .Shields: return "Shields"
-            case .Devices: return "Devices"
-            case .Domains: return "Domains"
-            case .WinkAccount: return "Account"
-            case .Logout: return "Logout"
+            case .overview: return "Overview"
+            case .policy: return "Policy"
+            case .empty: return ""
+            case .shields: return "Shields"
+            case .devices: return "Devices"
+            case .domains: return "Domains"
+            case .winkAccount: return "Account"
+            case .logout: return "Logout"
         }
     }
     
@@ -100,24 +100,24 @@ class MenuSideBarController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = UIColor.blackColor()
+        self.view.backgroundColor = UIColor.black
         
         gradientLayer.frame = self.view.bounds
         
         let color = UIColor(red: (49.0/255.0), green: (65.0/255.0), blue: (85.0/255.0), alpha: 1.0)
         self.tableView.backgroundColor = color
-        self.tableView.scrollEnabled = false
+        self.tableView.isScrollEnabled = false
         
-        let views = NSBundle.mainBundle().loadNibNamed("SideMenuHeader",owner:self,options:nil) as! [UIView]
+        let views = Bundle.main.loadNibNamed("SideMenuHeader",owner:self,options:nil) as! [UIView]
         sideMenuHeader = views[0] as! SideMenuHeader
         self.tableView.tableHeaderView = sideMenuHeader
         
         let keychain = UICKeyChainStore(service:keyChainDomain)
-        guard let data = try? keychain.dataForKey(UserPreferences.username!, error: ()) else {
+        guard let data = try? keychain.data(forKey: UserPreferences.username!, error: ()) else {
             debugPrint("IoT foundation credential missing in the Key Chain")
             return
         }
-        guard let json = try? NSJSONSerialization.JSONObjectWithData(data,options:[]) as! [String:AnyObject] else {
+        guard let json = try? JSONSerialization.jsonObject(with: data,options:[]) as! [String:AnyObject] else {
             debugPrint("Wrong IoT foundation json data in the Key Chain")
             return
         }
@@ -134,23 +134,23 @@ class MenuSideBarController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return SideMenu.count
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("SideMenuReuseIdentifier", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuReuseIdentifier", for: indexPath)
 
-        cell.textLabel?.text = SideMenu(rawValue: indexPath.row).description
-        cell.textLabel?.textColor = UIColor.whiteColor()
+        cell.textLabel?.text = SideMenu(rawValue: (indexPath as NSIndexPath).row).description
+        cell.textLabel?.textColor = UIColor.white
 
-        switch  SideMenu(rawValue: indexPath.row) {
-        case .Overview,.Policy:
+        switch  SideMenu(rawValue: (indexPath as NSIndexPath).row) {
+        case .overview,.policy:
             cell.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 16.0)!
             break
         default:
@@ -164,38 +164,38 @@ class MenuSideBarController: UITableViewController {
     
     // MARK: - Table view data source
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        switch  SideMenu(rawValue: indexPath.row) {
-        case .Shields:
-            self.performSegueWithIdentifier("ShieldsSegue", sender: indexPath)
-        case .WinkAccount:
-            self.performSegueWithIdentifier("WinkSegue", sender: indexPath)
-        case .Devices:
-            self.performSegueWithIdentifier("DevicesSegue", sender: indexPath)
-        case .Logout:
+        switch  SideMenu(rawValue: (indexPath as NSIndexPath).row) {
+        case .shields:
+            self.performSegue(withIdentifier: "ShieldsSegue", sender: indexPath)
+        case .winkAccount:
+            self.performSegue(withIdentifier: "WinkSegue", sender: indexPath)
+        case .devices:
+            self.performSegue(withIdentifier: "DevicesSegue", sender: indexPath)
+        case .logout:
             
             let window = self.view.window
 
-            MBProgressHUD.showHUDAddedTo(window!,animated:true)
+            MBProgressHUD.showAdded(to: window!,animated:true)
             iService.signOut({ (code) in
                 
-                MBProgressHUD.hideHUDForView(window!,animated:true)
+                MBProgressHUD.hide(for: window!,animated:true)
              
                 switch code {
-                case .Cancelled:
+                case .cancelled:
                     DDLogInfo("Cancelled")
-                case let .Error(error):
+                case let .error(error):
                     DDLogError(error.localizedDescription)
-                case let .HTTPStatus(status,_):
-                    let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+                case let .httpStatus(status,_):
+                    let message = HTTPURLResponse.localizedString(forStatusCode: status)
                     DDLogError(message)
                 // Json object
-                case .OK(_):
+                case .ok(_):
                     DDLogInfo("LOGOUT OK")
                     IMFAuthorizationManager.sharedInstance().logout({ (response, error) in
-                        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
-                        let window = UIApplication.sharedApplication().keyWindow
+                        UIApplication.shared.applicationIconBadgeNumber = 0
+                        let window = UIApplication.shared.keyWindow
                         let sb = UIStoryboard(name:"SignInController",bundle:nil)
                         let vc = sb.instantiateInitialViewController()
                         window!.rootViewController = vc
@@ -209,7 +209,7 @@ class MenuSideBarController: UITableViewController {
     }
 
     // MARK: - Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
     }
     

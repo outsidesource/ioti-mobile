@@ -72,7 +72,7 @@ extension HazardEvent {
             d += "\(sensorDesc)"
         }
         
-        if let _ = self.sensorDesc, _ = self.locationDesc {
+        if let _ = self.sensorDesc, let _ = self.locationDesc {
             d += " / "
         }
         
@@ -83,13 +83,13 @@ extension HazardEvent {
         return d
     }
     
-    static func hazardExists(hazardID:String,moc:NSManagedObjectContext) -> Bool
+    static func hazardExists(_ hazardID:String,moc:NSManagedObjectContext) -> Bool
     {
-        let fetchRequest = NSFetchRequest(entityName: StringFromClass(HazardEvent))
+        let fetchRequest = NSFetchRequest<HazardEvent>(entityName: StringFromClass(HazardEvent.self))
         fetchRequest.predicate = NSPredicate(format: "id = %@", hazardID)
         
         do {
-            let hazards = try moc.executeFetchRequest(fetchRequest) as! [HazardEvent]
+            let hazards = try moc.fetch(fetchRequest) 
             switch hazards.count {
             case 0:
                 return false
@@ -102,19 +102,19 @@ extension HazardEvent {
         
     }
     
-    static func getHazardEventWithId(hazardID:String,moc:NSManagedObjectContext) throws -> HazardEvent {
-        let fetchRequest = NSFetchRequest(entityName: StringFromClass(HazardEvent))
+    static func getHazardEventWithId(_ hazardID:String,moc:NSManagedObjectContext) throws -> HazardEvent {
+        let fetchRequest = NSFetchRequest<HazardEvent>(entityName: StringFromClass(HazardEvent.self))
         fetchRequest.predicate = NSPredicate(format: "id = %@", hazardID)
         
         do {
-            let hazards = try moc.executeFetchRequest(fetchRequest) as! [HazardEvent]
+            let hazards = try moc.fetch(fetchRequest) 
             switch hazards.count {
             case 0:
-                throw InsuranceError.EntityNotFound(hazardID)
+                throw InsuranceError.entityNotFound(hazardID)
             case 1:
                 return hazards.first!
             default:
-                throw InsuranceError.MoreThanOneEntity(hazardID)
+                throw InsuranceError.moreThanOneEntity(hazardID)
                 
             }
         } catch {

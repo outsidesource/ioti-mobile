@@ -80,21 +80,21 @@ class HazardAlertCell: UITableViewCell {
         }
     }
     
-    @IBAction func expandBoxClicked(sender: UIButton)
+    @IBAction func expandBoxClicked(_ sender: UIButton)
     {
         self.delegate?.tableViewDidSelectExpandButton(self)
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()        
-        self.selectionStyle = .None
+        self.selectionStyle = .none
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
     
-    func setExpanded(expanded: Bool, animated: Bool) {
+    func setExpanded(_ expanded: Bool, animated: Bool) {
         
         self.expanded = expanded
         

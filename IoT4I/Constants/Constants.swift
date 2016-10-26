@@ -43,7 +43,7 @@ import JavaScriptCore
 
 //////////////////////////////////////////////////////
 //PUT APPLICATION ROUTE HERE
-//applicationRoute exampe: https://YourApplicationRoute.mybluemix.net
+//applicationRoute exampe: https://YourApplicationRoute.mybluemix.net Without "/" at the end of the url
 let applicationRoute =
 
 //PUT APPLICATION CLIENTID HERE
@@ -57,7 +57,7 @@ var iService:InsuranceService = InsuranceService(backendRoute: applicationRoute,
 let Insurance_barTintColor = UIColor(red: 11/255, green: 68/255, blue: 100/255, alpha: 1)
 let HazardOrange_TintColor = UIColor(red: 240/255, green: 163/255, blue: 21/255, alpha: 1)
 let barTintColor = UIColor(red: (46.0/255.0), green: (159.0/255.0), blue: (225.0/255.0), alpha: 1.0)
-let HazardRed_TintColor = UIColor.redColor()
+let HazardRed_TintColor = UIColor.red
 
 let notificationOK: String! = "OK_IDENTIFIER"
 let notificationHELP: String! = "HELP_IDENTIFIER"
@@ -85,5 +85,5 @@ let kReloadPromotionView = "kReloadPromotionView"
 
 let keyChainDomain = "com.ibm.iot4i.secured"
 
-let WINDOW_WIDTH = UIScreen.mainScreen().bounds.width
-let WINDOW_HEIGHT = UIScreen.mainScreen().bounds.height
+let WINDOW_WIDTH = UIScreen.main.bounds.width
+let WINDOW_HEIGHT = UIScreen.main.bounds.height

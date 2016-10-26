@@ -63,21 +63,21 @@ class ShieldViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.lblTitle.text = self.shield.description_
         self.imgTitle.image = UIImage(named: self.shield.image!)
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
     }
     
     // MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier! {
             
         case "Hazards":
-            let hazardsViewController = segue.destinationViewController as! HazardAlertsViewController
+            let hazardsViewController = segue.destination as! HazardAlertsViewController
             hazardsViewController.shield = self.shield
             break
             
@@ -91,23 +91,23 @@ class ShieldViewController: UIViewController {
 
 extension ShieldViewController {
     
-    @IBAction func selector(sender: UISegmentedControl) {
+    @IBAction func selector(_ sender: UISegmentedControl) {
         let index = sender.selectedSegmentIndex
         
-        let bounds = UIScreen.mainScreen().bounds
+        let bounds = UIScreen.main.bounds
         if index == 0 {
             
-            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: { () -> Void in
-                self.devicesView.transform = CGAffineTransformMakeTranslation(bounds.width, 0)
-                self.hazardsView.transform = CGAffineTransformIdentity
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+                self.devicesView.transform = CGAffineTransform(translationX: bounds.width, y: 0)
+                self.hazardsView.transform = CGAffineTransform.identity
                 self.indicvatorView.frame.origin.x = (self.selector.frame.width / 4) - self.indicvatorView.bounds.width / 2
                 }, completion: { (finished) -> Void in
             })
             
         } else {
-            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: { () -> Void in
-                self.devicesView.transform = CGAffineTransformIdentity
-                self.hazardsView.transform = CGAffineTransformMakeTranslation(-bounds.width, 0)
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+                self.devicesView.transform = CGAffineTransform.identity
+                self.hazardsView.transform = CGAffineTransform(translationX: -bounds.width, y: 0)
                 self.indicvatorView.frame.origin.x = (((self.selector.frame.width / 4) * 3) - self.indicvatorView.bounds.width / 2)
                 }, completion: { (finished) -> Void in
             })

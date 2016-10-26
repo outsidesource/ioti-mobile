@@ -45,41 +45,41 @@ struct UserPreferences {
 
     static var alertSpeak: Bool {
         set {
-        NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: "AlertSpeak")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(newValue, forKey: "AlertSpeak")
+        UserDefaults.standard.synchronize()
         }
         get {
-            return NSUserDefaults.standardUserDefaults().boolForKey("AlertSpeak")
+            return UserDefaults.standard.bool(forKey: "AlertSpeak")
         }
     }
     
     static var alreadyAskedForTouchID: Bool {
         set {
-            NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: "alreadyAskedForTouchID")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue, forKey: "alreadyAskedForTouchID")
+            UserDefaults.standard.synchronize()
         }
         get {
-            return NSUserDefaults.standardUserDefaults().boolForKey("alreadyAskedForTouchID")
+            return UserDefaults.standard.bool(forKey: "alreadyAskedForTouchID")
         }
     }
 
     static var username: String? {
         set {
-        NSUserDefaults.standardUserDefaults().setObject(newValue,forKey: "usernameMMM")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(newValue,forKey: "usernameMMM")
+        UserDefaults.standard.synchronize()
         }
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey("usernameMMM")
+            return UserDefaults.standard.string(forKey: "usernameMMM")
         }
     }
     
     static var tokenWink: String? {
         set {
-        NSUserDefaults.standardUserDefaults().setObject(newValue,forKey: "tokenWinkMMM")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(newValue,forKey: "tokenWinkMMM")
+        UserDefaults.standard.synchronize()
         }
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey("tokenWinkMMM")
+            return UserDefaults.standard.string(forKey: "tokenWinkMMM")
         }
     }
     

@@ -49,9 +49,10 @@ private let reuseIdentifier = "ShieldCollectionViewCell"
 
 class ShieldsCollectionController: UICollectionViewController, NSFetchedResultsControllerDelegate {
 
-    private lazy var fetchedResultsController:NSFetchedResultsController = {
+    
+    lazy var fetchedResultController:NSFetchedResultsController<Shield> = {
         
-        let fetchRequest = NSFetchRequest(entityName:StringFromClass(Shield))
+        let fetchRequest = NSFetchRequest<Shield>(entityName:StringFromClass(Shield.self))
         
         let idSortDescriptor = NSSortDescriptor(key: "name", ascending: false)
 
@@ -73,12 +74,12 @@ class ShieldsCollectionController: UICollectionViewController, NSFetchedResultsC
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.collectionView!.registerNib(UINib(nibName: "ShieldCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.register(UINib(nibName: "ShieldCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
         self.automaticallyAdjustsScrollViewInsets = false
         self.collectionView!.contentInset = UIEdgeInsetsMake(-60, 0, 0, 0)
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.collectionView?.reloadData()
      }
     
@@ -88,14 +89,14 @@ class ShieldsCollectionController: UICollectionViewController, NSFetchedResultsC
 
 
     // MARK: - Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         switch segue.identifier! {
             case "ShieldSegue":
                 
-                let shieldViewController = segue.destinationViewController as! ShieldViewController
-                let indexPath = sender as! NSIndexPath
-                shieldViewController.shield = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Shield
+                let shieldViewController = segue.destination as! ShieldViewController
+                let indexPath = sender as! IndexPath
+                shieldViewController.shield = self.fetchedResultController.object(at: indexPath) 
                 
                 break
             
@@ -106,22 +107,22 @@ class ShieldsCollectionController: UICollectionViewController, NSFetchedResultsC
  
 
     // MARK: UICollectionViewDataSource
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return self.fetchedResultsController.sections!.count
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return self.fetchedResultController.sections!.count
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let sectionInfo = self.fetchedResultsController.sections![section]
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let sectionInfo = self.fetchedResultController.sections![section]
         return sectionInfo.numberOfObjects
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ShieldCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ShieldCollectionViewCell
 
         cell.shouldVibrate = false
-        let shield = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Shield
+        let shield = self.fetchedResultController.object(at: indexPath) 
         cell.shield = shield
         cell.additionalTasks()
         cell.setNeedsLayout()
@@ -130,34 +131,34 @@ class ShieldsCollectionController: UICollectionViewController, NSFetchedResultsC
         return cell
     }
 
-    override func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath)
+    override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
     {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ShieldCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ShieldCollectionViewCell
         cell.shouldVibrate = false
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
         return CGSize(width: 100.0, height: 120.0)
     }
     
     // MARK: UICollectionViewDelegate
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        self.performSegueWithIdentifier("ShieldSegue", sender: indexPath)
+        self.performSegue(withIdentifier: "ShieldSegue", sender: indexPath)
     }
     
     // MARK: NSFetchedResultsControllerDelegate
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?)
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?)
     {
-        self.collectionView?.addChangeForObjectAtIndexPath(indexPath, forChangeType: type, newIndexPath: newIndexPath)
+        self.collectionView?.addChangeForObject(at: indexPath, for: type, newIndexPath: newIndexPath)
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType)
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType)
     {
-        self.collectionView?.addChangeForSection(sectionInfo, atIndex: UInt(sectionIndex), forChangeType: type)
+        self.collectionView?.addChange(forSection: sectionInfo, at: UInt(sectionIndex), for: type)
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController)
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
         self.collectionView?.commitChanges()
     }

@@ -53,7 +53,7 @@ class Utils {
 
 extension Utils {
     
-    class func addHazardEvent(hzrdEvntDic :[String:AnyObject], hazardTitle:String)
+    class func addHazardEvent(_ hzrdEvntDic :[String:AnyObject], hazardTitle:String)
     {
         
         let moc = dataController.writerContext
@@ -88,10 +88,10 @@ extension Utils {
             return
         }
         
-        moc.performBlock {
+        moc.perform {
             
-            let hazardEvent = NSEntityDescription.insertNewObjectForEntityForName(StringFromClass(HazardEvent),
-                inManagedObjectContext:moc) as! HazardEvent
+            let hazardEvent = NSEntityDescription.insertNewObject(forEntityName: StringFromClass(HazardEvent.self),
+                into:moc) as! HazardEvent
             hazardEvent.id = hazardID
             hazardEvent.shield = shield
             hazardEvent.isHandled = false
@@ -100,8 +100,8 @@ extension Utils {
             hazardEvent.latitude = 0
             hazardEvent.longitude = 0
             hazardEvent.title = hazardTitle
-            hazardEvent.timestamp = Utils.parseTimestamp(hzrdEvntDic["timestamp"] as? String ?? "2000-00-00T00:00:00,982Z") ?? NSDate()
-            hazardEvent.isUrgent = isUrgent
+            hazardEvent.timestamp = Utils.parseTimestamp(hzrdEvntDic["timestamp"] as? String ?? "2000-00-00T00:00:00,982Z") ?? Date()
+            hazardEvent.isUrgent = isUrgent as NSNumber?
             hazardEvent.locationDesc = locationDesc
             hazardEvent.sensorDesc = sensorDesc
             
@@ -112,7 +112,7 @@ extension Utils {
                 DDLogError("Core Data Error \(error)")
             }
             
-            (UIApplication.sharedApplication().delegate as! AppDelegate).showHazardNotification(hazardTitle, hazardEvent: hazardEvent)
+            (UIApplication.shared.delegate as! AppDelegate).showHazardNotification(hazardTitle, hazardEvent: hazardEvent)
 
         }
     }
@@ -124,74 +124,74 @@ extension Utils {
     static let dateISO8601FormaterPoint = Utils.createISO8601DateFormatter(".")
     static let dateISO8601FormaterComma = Utils.createISO8601DateFormatter(",")
     
-    static func setPlaceHolderColor(textField:UITextField,color:UIColor) {
+    static func setPlaceHolderColor(_ textField:UITextField,color:UIColor) {
         
         textField.attributedPlaceholder = NSAttributedString(string:textField.placeholder!,attributes:[NSForegroundColorAttributeName: color])
         
     }
     
     
-    static func createISO8601DateFormatter(commaSeparator:Character) -> NSDateFormatter {
+    static func createISO8601DateFormatter(_ commaSeparator:Character) -> DateFormatter {
         
-        let df = NSDateFormatter()
-        df.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        df.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        let df = DateFormatter()
+        df.timeZone = TimeZone(secondsFromGMT: 0)
+        df.locale = Locale(identifier: "en_US_POSIX")
         df.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'" + String(commaSeparator) + "'SSS'Z'"
         
         return df
         
     }
     
-    static func parseTimestamp(ts:String?) -> NSDate? {
+    static func parseTimestamp(_ ts:String?) -> Date? {
         
         guard let ts = ts else {
             return nil
         }
         
-        var timestamp = dateISO8601FormaterPoint.dateFromString(ts)
+        var timestamp = dateISO8601FormaterPoint.date(from: ts)
         if timestamp == nil {
-            timestamp = dateISO8601FormaterComma.dateFromString(ts)
+            timestamp = dateISO8601FormaterComma.date(from: ts)
         }
         return timestamp
         
     }
     
-    static func DDMMYY(date: NSDate?) -> String?
+    static func DDMMYY(_ date: Date?) -> String?
     {
         guard let _ = date else {
             return ""
         }
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yy"
         
-        return dateFormatter.stringFromDate(date!)
+        return dateFormatter.string(from: date!)
 
     }
     
-    static func DDMMYY_HHMM(date: NSDate?) -> String
+    static func DDMMYY_HHMM(_ date: Date?) -> String
     {
         guard let _ = date else {
             return ""
         }
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yy HH:mm"
         
-        return dateFormatter.stringFromDate(date!)
+        return dateFormatter.string(from: date!)
         
     }
     
-    static func HHMM(date: NSDate?) -> String
+    static func HHMM(_ date: Date?) -> String
     {
         guard let _ = date else {
             return ""
         }
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
         
-        return dateFormatter.stringFromDate(date!)
+        return dateFormatter.string(from: date!)
         
     }
     
@@ -200,17 +200,17 @@ extension Utils {
 extension Utils {
     
     // MARK: - Sandbox directory
-    static let applicationCachesDirectory:NSURL = {
-        return NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first!
+    static let applicationCachesDirectory:URL = {
+        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
     }()
     
-    static let applicationLibraryDirectory:NSURL = {
-        return NSFileManager.defaultManager().URLsForDirectory(.LibraryDirectory, inDomains: .UserDomainMask).first!
+    static let applicationLibraryDirectory:URL = {
+        return FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
     }()
     
     
-    static let documentsDirectory: NSURL = {
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+    static let documentsDirectory: URL = {
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return urls.first!
     }()
     
@@ -218,10 +218,10 @@ extension Utils {
 
 extension Utils {
     
-    static func setResourceAttributeExcludedFromBackupKeyToPath(filePath:String) {
-        if let url:NSURL = NSURL(fileURLWithPath: filePath) {
+    static func setResourceAttributeExcludedFromBackupKeyToPath(_ filePath:String) {
+        if let url:URL = URL(fileURLWithPath: filePath) {
             do {
-                try url.setResourceValue(true, forKey: NSURLIsExcludedFromBackupKey)
+                try (url as NSURL).setResourceValue(true, forKey: URLResourceKey.isExcludedFromBackupKey)
             } catch let err as NSError {
                 fatalError("fatal error - \(err)")
             }
@@ -231,31 +231,31 @@ extension Utils {
 }
 
 extension Utils {
-    class func registerToAPN(application:UIApplication)
+    class func registerToAPN(_ application:UIApplication)
     {
         let okAction = UIMutableUserNotificationAction()
         okAction.identifier = notificationOK
         okAction.title = NSLocalizedString("APNS.OK", comment: "OK Push notification")
         
-        okAction.activationMode = .Background
-        okAction.destructive = false
-        okAction.authenticationRequired = false
+        okAction.activationMode = .background
+        okAction.isDestructive = false
+        okAction.isAuthenticationRequired = false
         
         let helpAction = UIMutableUserNotificationAction()
         helpAction.identifier = notificationHELP
         helpAction.title = NSLocalizedString("APNS.HELP", comment: "Help Push notification")
         
-        helpAction.activationMode = .Foreground
-        helpAction.destructive = true
-        helpAction.authenticationRequired = false
+        helpAction.activationMode = .foreground
+        helpAction.isDestructive = true
+        helpAction.isAuthenticationRequired = false
         
         let checkInCategory = UIMutableUserNotificationCategory()
         checkInCategory.identifier = "CHECKIN_CATEGORY"
-        checkInCategory.setActions([okAction], forContext: .Default)
-        checkInCategory.setActions([okAction], forContext: .Minimal)
+        checkInCategory.setActions([okAction], for: .default)
+        checkInCategory.setActions([okAction], for: .minimal)
         
         let categories:NSSet = NSSet(array: [checkInCategory])
-        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: categories as? Set<UIUserNotificationCategory>)
+        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories as? Set<UIUserNotificationCategory>)
         
         application.registerUserNotificationSettings(settings)
         application.registerForRemoteNotifications()
@@ -287,14 +287,14 @@ extension Utils {
         let keychain = UICKeyChainStore(service:keyChainDomain)
         
         do {
-            return (try keychain.stringForKey("appUsername", error: ()), try keychain.stringForKey("appPassword", error: ()))
+            return (try keychain.string(forKey: "appUsername", error: ()), try keychain.string(forKey: "appPassword", error: ()))
         } catch {
             DDLogError("KeyChain Error \(error)")
             throw error
         }
     }
     
-    class func writeCredential(user:String,password: String) {
+    class func writeCredential(_ user:String,password: String) {
         
         let keychain = UICKeyChainStore(service:keyChainDomain)
         keychain.setString(password, forKey: "appPassword")
@@ -311,8 +311,8 @@ extension Utils {
     
 }
 
-public func StringFromClass(obj: AnyClass) -> String {
-    return obj.description().componentsSeparatedByString(".").last!
+public func StringFromClass(_ obj: AnyClass) -> String {
+    return obj.description().components(separatedBy: ".").last!
 }
 extension UILabel {
     
@@ -337,7 +337,7 @@ extension UIView {
     
     func clearBackgroundColor()
     {
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
     }
     
     func setRedHazardousBackground()

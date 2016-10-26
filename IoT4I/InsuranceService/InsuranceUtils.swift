@@ -56,15 +56,15 @@ class InsuranceUtils {
             {
                 iService.postAPNToken(self, completion: { (code) in
                     switch code {
-                    case .Cancelled:
+                    case .cancelled:
                         DDLogInfo("Cancelled")
-                    case let .Error(error):
+                    case let .error(error):
                         DDLogError(error.localizedDescription)
-                    case let .HTTPStatus(status,_):
-                        let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+                    case let .httpStatus(status,_):
+                        let message = HTTPURLResponse.localizedString(forStatusCode: status)
                         DDLogError(message)
                     // Json object
-                    case .OK(_):
+                    case .ok(_):
                         DDLogInfo("APN OK")
                     }
                 })
@@ -79,8 +79,8 @@ class InsuranceUtils {
                 
                 self.getPromotions({ (success) in
                     didLoadPromotions = true
-                    dispatch_async(dispatch_get_main_queue()) {
-                        NSNotificationCenter.defaultCenter().postNotificationName(kReloadPromotionView, object: nil)
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: kReloadPromotionView), object: nil)
                     }
                 })
             }
@@ -93,34 +93,34 @@ class InsuranceUtils {
         
     }
     
-    static func getShields(completion: (success: Bool) -> Void) {
+    static func getShields(_ completion: @escaping (_ success: Bool) -> Void) {
         
         iService.apiGetPathData(self, path: APIxShieldsPath, method: kGET) { (code) in
             switch code {
-            case .Cancelled:
+            case .cancelled:
                 DDLogInfo("Cancelled")
                 break
-            case let .Error(error):
+            case let .error(error):
                 DDLogError(error.localizedDescription)
-                completion(success: false)
+                completion(false)
                 break
-            case let .HTTPStatus(status,json):
-                let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+            case let .httpStatus(status,json):
+                let message = HTTPURLResponse.localizedString(forStatusCode: status)
                 DDLogError(message)
                 if let json = json {
                     DDLogVerbose("\(json)")
                 }
                 break
             // Json object
-            case let .OK(data):
+            case let .ok(data):
                 let moc = dataController.writerContext
-                moc.performBlock {
+                moc.perform {
                     guard let json = data!.responseJson else {
                         DDLogError("No JSON")
                         return
                     }
                     DDLogVerbose("\(json)")
-                    guard let total = json["total"] as? Int where total > 0 else {
+                    guard let total = json["total"] as? Int , total > 0 else {
                         DDLogError("No total for Shields")
                         return
                     }
@@ -134,8 +134,8 @@ class InsuranceUtils {
                     let shieldParams = json["params"] as? [String:AnyObject] ?? [:]
                     
                     for jsonShield in shields {
-                        let shield = NSEntityDescription.insertNewObjectForEntityForName(StringFromClass(Shield),
-                            inManagedObjectContext:moc) as! Shield
+                        let shield = NSEntityDescription.insertNewObject(forEntityName: StringFromClass(Shield.self),
+                            into:moc) as! Shield
                         shield.id = jsonShield["id"] as? String
                         shield.uuid = jsonShield["UUID"] as? String
                         shield.name = jsonShield["name"] as? String
@@ -149,7 +149,7 @@ class InsuranceUtils {
                     
                     do {
                         try moc.save()
-                        completion(success: true)
+                        completion(true)
                     } catch {
                         DDLogError("Core Data Error \(error)")
                     }
@@ -158,51 +158,51 @@ class InsuranceUtils {
         }
     }
     
-    static func getPromotions(completion: (success: Bool) -> Void) {
+    static func getPromotions(_ completion: @escaping (_ success: Bool) -> Void) {
         
         iService.apiGetPathData(self, path: APIxPromotionsPath, method: kGET) { (code) in
             switch code {
-            case .Cancelled:
+            case .cancelled:
                 DDLogInfo("Cancelled")
                 break
-            case let .Error(error):
+            case let .error(error):
                 DDLogError(error.localizedDescription)
-                completion(success: false)
+                completion(false)
                 break
-            case let .HTTPStatus(status,json):
-                let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+            case let .httpStatus(status,json):
+                let message = HTTPURLResponse.localizedString(forStatusCode: status)
                 DDLogError(message)
                 if let json = json {
                     DDLogVerbose("\(json)")
                 }
-                completion(success: false)
+                completion(false)
                 break
             // Json object
-            case let .OK(data):
+            case let .ok(data):
                 let moc = dataController.writerContext
-                moc.performBlock {
+                moc.perform {
                     guard let json = data!.responseJson else {
                         DDLogError("No JSON")
-                        completion(success: false)
+                        completion(false)
                         return
                     }
                     DDLogVerbose("\(json)")
-                    guard let total = json["total"] as? Int where total > 0 else {
+                    guard let total = json["total"] as? Int , total > 0 else {
                         DDLogError("No total for Promotions")
-                        completion(success: false)
+                        completion(false)
                         return
                     }
                     DDLogVerbose("number of promotions \(total)")
                     
                     guard let promotions = json["promotions"] as? [[String:AnyObject]] else {
                         DDLogError("No Array for promotions")
-                        completion(success: false)
+                        completion(false)
                         return
                     }
                     
                     for jsonPromotion in promotions {
-                        let promotion = NSEntityDescription.insertNewObjectForEntityForName(StringFromClass(Promotion),
-                            inManagedObjectContext:moc) as! Promotion
+                        let promotion = NSEntityDescription.insertNewObject(forEntityName: StringFromClass(Promotion.self),
+                            into:moc) as! Promotion
                         promotion.id = jsonPromotion["id"] as? String ?? ""
                         promotion.title = jsonPromotion["title"] as? String ?? ""
                         promotion.desc = jsonPromotion["description"] as? String ?? ""
@@ -210,7 +210,7 @@ class InsuranceUtils {
                         promotion.phone = jsonPromotion["phone"] as? String ?? ""
                         promotion.timestamp = jsonPromotion["timestamp"] as? String ?? ""
                         promotion.image = jsonPromotion["image"] as? String ?? "tipPromo"
-                        promotion.type =  jsonPromotion["type"] as? NSNumber ?? NSNumber(int: 0)
+                        promotion.type =  jsonPromotion["type"] as? NSNumber ?? NSNumber(value: 0 as Int32)
                         
                         DDLogVerbose("\(promotion)")
                         
@@ -218,7 +218,7 @@ class InsuranceUtils {
                     
                     do {
                         try moc.save()
-                        completion(success: true)
+                        completion(true)
                     } catch {
                         DDLogError("Core Data Error \(error)")
                     }
@@ -227,35 +227,35 @@ class InsuranceUtils {
         }
     }
     
-    static func getDevices(completion: (success: Bool) -> Void) {
+    static func getDevices(_ completion: @escaping (_ success: Bool) -> Void) {
         
         iService.apiGetPathData(self, path: APIxDevicesPath, method: kGET) { (code) in
             switch code {
-            case .Cancelled:
+            case .cancelled:
                 DDLogInfo("Cancelled")
                 break
-            case let .Error(error):
+            case let .error(error):
                 DDLogError(error.localizedDescription)
-                completion(success: false)
+                completion(false)
                 break
-            case let .HTTPStatus(status,json):
-                let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+            case let .httpStatus(status,json):
+                let message = HTTPURLResponse.localizedString(forStatusCode: status)
                 DDLogError(message)
                 if let json = json {
                     DDLogVerbose("\(json)")
                 }
                 break
             // Json object
-            case let .OK(data):
+            case let .ok(data):
                 let moc = dataController.writerContext
-                moc.performBlock {
+                moc.perform {
                     guard let json = data!.responseJson else {
                         DDLogError("No JSON")
                         return
                     }
                     DDLogVerbose("\(json)")
                     
-                    guard let total = json["total"] as? Int where total > 0 else {
+                    guard let total = json["total"] as? Int , total > 0 else {
                         DDLogError("No total for Devices")
                         return
                     }
@@ -267,8 +267,8 @@ class InsuranceUtils {
                     }
                     
                     for jsonDevice in devices {
-                        let device = NSEntityDescription.insertNewObjectForEntityForName(StringFromClass(Device),
-                            inManagedObjectContext:moc) as! Device
+                        let device = NSEntityDescription.insertNewObject(forEntityName: StringFromClass(Device.self),
+                            into:moc) as! Device
 
                         device.name = jsonDevice["name"] as? String ?? "Unknown"
                         device.desc = jsonDevice["model_name"] as? String ?? "Unknown"
@@ -282,7 +282,7 @@ class InsuranceUtils {
                     
                     do {
                         try moc.save()
-                        completion(success: true)
+                        completion(true)
                     } catch {
                         DDLogError("Core Data Error \(error)")
                     }
@@ -291,29 +291,29 @@ class InsuranceUtils {
         }
     }
     
-    static func getHazards(completion: (success: Bool) -> Void) {
+    static func getHazards(_ completion: @escaping (_ success: Bool) -> Void) {
         
         iService.apiGetPathData(self, path: APIxHazardEventsPath, method: kGET) { (code) in
             switch code {
-            case .Cancelled:
+            case .cancelled:
                 DDLogInfo("Cancelled")
                 break
-            case let .Error(error):
+            case let .error(error):
                 DDLogError(error.localizedDescription)
-                completion(success: false)
+                completion(false)
                 break
-            case let .HTTPStatus(status,json):
-                let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+            case let .httpStatus(status,json):
+                let message = HTTPURLResponse.localizedString(forStatusCode: status)
                 DDLogError(message)
                 if let json = json {
                     DDLogVerbose("\(json)")
                 }
                 break
             // Json object
-            case let .OK(data):
+            case let .ok(data):
 
                 let moc = dataController.writerContext
-                moc.performBlock {
+                moc.perform {
                     do {
                         
                         guard let json = data!.responseJson else {
@@ -322,7 +322,7 @@ class InsuranceUtils {
                         }
                         DDLogVerbose("\(json)")
                         
-                        guard let total = json["total"] as? Int where total > 0 else {
+                        guard let total = json["total"] as? Int , total > 0 else {
                             DDLogError("No total for HazardEvents")
                             return
                         }
@@ -333,9 +333,9 @@ class InsuranceUtils {
                             return
                         }
 
-                        let fetchRequest = NSFetchRequest(entityName: StringFromClass(HazardEvent))
+                        let fetchRequest = NSFetchRequest<HazardEvent>(entityName: StringFromClass(HazardEvent.self))
                         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
-                        let currentHazardEvents = try moc.executeFetchRequest(fetchRequest) as! [HazardEvent]
+                        let currentHazardEvents = try moc.fetch(fetchRequest) 
                         DDLogVerbose("\(currentHazardEvents.count) local hazard events")
     
                         var nbInserted = 0
@@ -379,19 +379,19 @@ class InsuranceUtils {
                                 
                                 print(jsonHazardEvent)
                                 
-                                let hazardEvent = NSEntityDescription.insertNewObjectForEntityForName(StringFromClass(HazardEvent),
-                                    inManagedObjectContext:moc) as! HazardEvent
+                                let hazardEvent = NSEntityDescription.insertNewObject(forEntityName: StringFromClass(HazardEvent.self),
+                                    into:moc) as! HazardEvent
                                 
                                 hazardEvent.id = id
                                 hazardEvent.shield = shield
-                                hazardEvent.isHandled = jsonHazardEvent["isHandled"] as? NSNumber ?? NSNumber(int: 0)
-                                hazardEvent.isLocal = jsonHazardEvent["islocal"] as? NSNumber  ?? NSNumber(int: 0)
-                                hazardEvent.isViolated = jsonHazardEvent["isviolated"] as? NSNumber  ?? NSNumber(int: 0)
+                                hazardEvent.isHandled = jsonHazardEvent["isHandled"] as? NSNumber ?? NSNumber(value: 0 as Int32)
+                                hazardEvent.isLocal = jsonHazardEvent["islocal"] as? NSNumber  ?? NSNumber(value: 0 as Int32)
+                                hazardEvent.isViolated = jsonHazardEvent["isviolated"] as? NSNumber  ?? NSNumber(value: 0 as Int32)
                                 hazardEvent.latitude = jsonHazardEvent["latitude"] as? NSNumber
                                 hazardEvent.longitude = jsonHazardEvent["longitude"] as? NSNumber
                                 hazardEvent.title = jsonHazardEvent["title"] as? String ?? ""
-                                hazardEvent.timestamp = Utils.parseTimestamp(jsonHazardEvent["timestamp"] as? String ?? "2000-00-00T00:00:00,982Z") ?? NSDate()
-                                hazardEvent.isUrgent = jsonHazardEvent["isUrgent"] as? NSNumber  ?? NSNumber(int: 0)
+                                hazardEvent.timestamp = Utils.parseTimestamp(jsonHazardEvent["timestamp"] as? String ?? "2000-00-00T00:00:00,982Z") ?? Date()
+                                hazardEvent.isUrgent = jsonHazardEvent["isUrgent"] as? NSNumber  ?? NSNumber(value: 0 as Int32)
                                 hazardEvent.locationDesc = jsonHazardEvent["locationDesc"] as? String ?? "Unknown Location"
                                 hazardEvent.sensorDesc = jsonHazardEvent["sensorDesc"] as? String
                                 
@@ -409,7 +409,7 @@ class InsuranceUtils {
                         
                         try moc.save()
                         DDLogInfo("\(nbInserted) hazard inserted")
-                        NSNotificationCenter.defaultCenter().postNotificationName(kDidHazardsLoad, object: nil)
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: kDidHazardsLoad), object: nil)
                         
                     } catch let error as InsuranceError {
                         DDLogError("\(error)")
@@ -418,7 +418,7 @@ class InsuranceUtils {
                         fatalError()
                     }
                     
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         AppDelegate.updateApplicationBadge()
                     }
                 

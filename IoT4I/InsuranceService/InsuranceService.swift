@@ -45,45 +45,45 @@ import CocoaLumberjack
 
 public enum HTTPOperationResult {
     
-    case OK(AnyObject?)
-    case Cancelled
-    case HTTPStatus(Int,AnyObject?)
-    case Error(NSError)
+    case ok(AnyObject?)
+    case cancelled
+    case httpStatus(Int,AnyObject?)
+    case error(NSError)
     
 }
 
-public enum InsuranceError:ErrorType {
-    case NoCredentials
-    case OperationAlreadyExecuting
-    case MoreThanOneEntity(String)
-    case EntityNotFound(String)
-    case NoEntitiesFound(String)
+public enum InsuranceError:Error {
+    case noCredentials
+    case operationAlreadyExecuting
+    case moreThanOneEntity(String)
+    case entityNotFound(String)
+    case noEntitiesFound(String)
 }
 
-public class InsuranceService: NSObject
+open class InsuranceService: NSObject
 {
-    public internal(set) var didSignedIn = false
+    open internal(set) var didSignedIn = false
     
-    public var user:String?
+    open var user:String?
     
-    public internal(set) var password:String?
+    open internal(set) var password:String?
 
     internal var mcaAuthenticationDelegate = MCAAuthenticationDelegate()
     
     public init(backendRoute:String, backendGUID:String)
     {
         
-        IMFClient.sharedInstance().initializeWithBackendRoute(applicationRoute, backendGUID: applicationId)
-        IMFClient.sharedInstance().registerAuthenticationDelegate(mcaAuthenticationDelegate,forRealm: applicationRealName)
+        IMFClient.sharedInstance().initialize(withBackendRoute: applicationRoute, backendGUID: applicationId)
+        IMFClient.sharedInstance().register(mcaAuthenticationDelegate,forRealm: applicationRealName)
         
         //Register to APN after initializing BlueMix backend
-        let settings = UIUserNotificationSettings(forTypes: [.Badge,.Alert, .Sound], categories: nil)
-        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-        UIApplication.sharedApplication().registerForRemoteNotifications()
+        let settings = UIUserNotificationSettings(types: [.badge,.alert, .sound], categories: nil)
+        UIApplication.shared.registerUserNotificationSettings(settings)
+        UIApplication.shared.registerForRemoteNotifications()
 
     }
     
-    public func signIn(delegate:AnyObject, username:String, password:String ,completion: (code: HTTPOperationResult) -> Void)
+    open func signIn(_ delegate:AnyObject, username:String, password:String ,completion: @escaping (_ code: HTTPOperationResult) -> Void)
     {
         mcaAuthenticationDelegate.user = username
         mcaAuthenticationDelegate.password = password
@@ -91,40 +91,40 @@ public class InsuranceService: NSObject
         let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/protected"
         let request = IMFResourceRequest(path: requestPath, method: kGET)
         
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request?.send { (response, error) -> Void in
             if (error != nil){
-                completion(code: .Error(error))
+                completion(.error(error as! NSError))
             } else {
                 self.user = username
                 self.password = password
                 
                 Utils.writeCredential(username, password: password)
                 self.didSignedIn = true
-                completion(code: .OK(response))
+                completion(.ok(response))
             }
         };
     }
     
-    public func deleteDevicebyId(delegate:AnyObject, deviceId:String?, completion: (code: HTTPOperationResult) -> Void)
+    open func deleteDevicebyId(_ delegate:AnyObject, deviceId:String?, completion: @escaping (_ code: HTTPOperationResult) -> Void)
     {
         let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/device/" + (deviceId ?? "")
         let request = IMFResourceRequest(path: requestPath, method: kDelete)
         
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request?.send { (response, error) -> Void in
             if (error != nil){
-                completion(code: .Error(error))
+                completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
                 
-                switch response.httpStatus
+                switch response?.httpStatus
                 {
-                case 200:
-                    completion(code: .OK(response))
+                case 200?:
+                    completion(.ok(response))
                     break
                     
                 default:
-                    completion(code: .HTTPStatus(Int(response.httpStatus),response.responseJson))
+                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
                     break
                 }
                 
@@ -132,26 +132,26 @@ public class InsuranceService: NSObject
         };
     }
     
-    public func updateDevicebyId(delegate:AnyObject, deviceId:String?, attributeName:String?,  attributeValue:String?, completion: (code: HTTPOperationResult) -> Void)
+    open func updateDevicebyId(_ delegate:AnyObject, deviceId:String?, attributeName:String?,  attributeValue:String?, completion: @escaping (_ code: HTTPOperationResult) -> Void)
     {
         let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/device/" + (deviceId ?? "X") + "/" + (attributeName ?? "X") + "/" + (attributeValue ?? "X")
         let request = IMFResourceRequest(path: requestPath, method: kPost)
         
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request?.send { (response, error) -> Void in
             if (error != nil){
-                completion(code: .Error(error))
+                completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
                 
-                switch response.httpStatus
+                switch response?.httpStatus
                 {
-                case 200:
-                    completion(code: .OK(response))
+                case 200?:
+                    completion(.ok(response))
                     break
                     
                 default:
-                    completion(code: .HTTPStatus(Int(response.httpStatus),response.responseJson))
+                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
                     break
                 }
                 
@@ -159,35 +159,35 @@ public class InsuranceService: NSObject
         };
     }
     
-    public func apiGetPathData(delegate: AnyObject, path: String, method: String,completion: (code: HTTPOperationResult) -> Void)
+    open func apiGetPathData(_ delegate: AnyObject, path: String, method: String,completion: @escaping (_ code: HTTPOperationResult) -> Void)
     {
         debugPrint("API REQUEST " + path)
         
         let requestPath = IMFClient.sharedInstance().backendRoute + path
         let request = IMFResourceRequest(path: requestPath, method: method)
         
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request?.send { (response, error) -> Void in
             if (error != nil){
-                completion(code: .Error(error))
+                completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
                 
-                switch response.httpStatus
+                switch response?.httpStatus
                 {
-                case 200:
-                    completion(code: .OK(response))
+                case 200?:
+                    completion(.ok(response))
                     break
                     
                 default:
-                    completion(code: .HTTPStatus(Int(response.httpStatus),response.responseJson))
+                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
                     break
                 }
             }
         };
     }
     
-    public func postWinkToken(delegate:AnyObject, token:String, completion: (code: HTTPOperationResult) -> Void)
+    open func postWinkToken(_ delegate:AnyObject, token:String, completion: @escaping (_ code: HTTPOperationResult) -> Void)
     {
         let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/auth/" + token
         let request = IMFResourceRequest(path: requestPath, method: kPost)
@@ -195,21 +195,21 @@ public class InsuranceService: NSObject
         debugPrint("TOKEN")
         debugPrint(token)
         
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request?.send { (response, error) -> Void in
             if (error != nil){
-                completion(code: .Error(error))
+                completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
                 
-                switch response.httpStatus
+                switch response?.httpStatus
                 {
-                case 200:
-                    completion(code: .OK(response))
+                case 200?:
+                    completion(.ok(response))
                     break
                     
                 default:
-                    completion(code: .HTTPStatus(Int(response.httpStatus),response.responseJson))
+                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
                     break
                 }
                 
@@ -217,26 +217,26 @@ public class InsuranceService: NSObject
         };
     }
     
-    public func postAPNToken(delegate:AnyObject, completion: (code: HTTPOperationResult) -> Void)
+    open func postAPNToken(_ delegate:AnyObject, completion: @escaping (_ code: HTTPOperationResult) -> Void)
     {
         let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/user/setdeviceid/" + (lastDeviceId ?? "")
         let request = IMFResourceRequest(path: requestPath, method: kPost)
         
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request?.send { (response, error) -> Void in
             if (error != nil){
-                completion(code: .Error(error))
+                completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
                 
-                switch response.httpStatus
+                switch response?.httpStatus
                 {
-                case 200:
-                    completion(code: .OK(response))
+                case 200?:
+                    completion(.ok(response))
                     break
                     
                 default:
-                    completion(code: .HTTPStatus(Int(response.httpStatus),response.responseJson))
+                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
                     break
                 }
                 
@@ -244,27 +244,27 @@ public class InsuranceService: NSObject
         };
     }
     
-    public func postHazardAction(delegate:AnyObject, hazardId:String, hazardAction:String, completion: (code: HTTPOperationResult) -> Void)
+    open func postHazardAction(_ delegate:AnyObject, hazardId:String, hazardAction:String, completion: @escaping (_ code: HTTPOperationResult) -> Void)
     {
 
         let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/hazardEvents/setStatus/" + hazardId + "/" + hazardAction
         let request = IMFResourceRequest(path: requestPath, method: kPost)
 
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request?.send { (response, error) -> Void in
             if (error != nil){
-                completion(code: .Error(error))
+                completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
                 
-                switch response.httpStatus
+                switch response?.httpStatus
                 {
-                case 200:
-                    completion(code: .OK(response))
+                case 200?:
+                    completion(.ok(response))
                     break
                     
                 default:
-                    completion(code: .HTTPStatus(Int(response.httpStatus),response.responseJson))
+                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
                     break
                 }
                 
@@ -273,20 +273,20 @@ public class InsuranceService: NSObject
         
     }
     
-    public func signOut(completion: (code: HTTPOperationResult) -> Void) {
+    open func signOut(_ completion: @escaping (_ code: HTTPOperationResult) -> Void) {
         
         let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/logout"
         let request = IMFResourceRequest(path: requestPath, method: kPost)
         
-        request.sendWithCompletionHandler { (response, error) -> Void in
+        request?.send { (response, error) -> Void in
             if (nil != error){
-                completion(code: .Error(error))
+                completion(.error(error as! NSError))
             } else {
                 self.didSignedIn = false
-                dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
+                DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
                     Utils.removeCredential()
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completion(code: .OK(response))
+                    DispatchQueue.main.async {
+                        completion(.ok(response))
                     }
                 }
             }
@@ -296,14 +296,14 @@ public class InsuranceService: NSObject
 }
 
 
-public class MCAAuthenticationDelegate : NSObject, IMFAuthenticationDelegate{
+open class MCAAuthenticationDelegate : NSObject, IMFAuthenticationDelegate{
     
     //MARK: IMFAuthenticationDelegate
 
-    public var user:String = ""
-    public var password:String = ""
+    open var user:String = ""
+    open var password:String = ""
     
-    public func authenticationContext(context: IMFAuthenticationContext!, didReceiveAuthenticationChallenge challenge: [NSObject : AnyObject]!) {
+    open func authenticationContext(_ context: IMFAuthenticationContext!, didReceiveAuthenticationChallenge challenge: [AnyHashable: Any]!) {
         
         debugPrint("didReceiveAuthenticationChallenge :: %@", challenge)
 
@@ -316,13 +316,13 @@ public class MCAAuthenticationDelegate : NSObject, IMFAuthenticationDelegate{
         
     }
     
-    public func authenticationContext(context: IMFAuthenticationContext!, didReceiveAuthenticationSuccess userInfo: [NSObject : AnyObject]!) {
+    open func authenticationContext(_ context: IMFAuthenticationContext!, didReceiveAuthenticationSuccess userInfo: [AnyHashable: Any]!) {
         debugPrint("didReceiveAuthenticationSuccess")
         
         context.submitAuthenticationSuccess()
     }
 
-    public func authenticationContext(context: IMFAuthenticationContext!, didReceiveAuthenticationFailure userInfo: [NSObject : AnyObject]!) {
+    open func authenticationContext(_ context: IMFAuthenticationContext!, didReceiveAuthenticationFailure userInfo: [AnyHashable: Any]!) {
         debugPrint("didReceiveAuthenticationFailure")
         
         context.submitAuthenticationFailure(userInfo)

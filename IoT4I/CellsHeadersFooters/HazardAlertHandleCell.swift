@@ -48,7 +48,7 @@ class HazardAlertHandleCell: UITableViewCell {
     @IBOutlet weak var lblTimestamp: UILabel!
     @IBOutlet weak var imgEvent: UIImageView!
     
-    var indexPath:NSIndexPath!
+    var indexPath:IndexPath!
     var delegate:HazardAlertCellDelegate?
     
     var event:HazardEvent! {
@@ -56,7 +56,7 @@ class HazardAlertHandleCell: UITableViewCell {
             self.lblName.text = event.title
             self.lblDesc.text = event.sensLocDesc
             self.lblTimestamp.text = "Triggered: " + Utils.DDMMYY_HHMM(event.timestamp)
-            self.imgEvent.image = UIImage(named: "hazardDefaultNoBackground")!.imageWithRenderingMode(.AlwaysTemplate)
+            self.imgEvent.image = UIImage(named: "hazardDefaultNoBackground")!.withRenderingMode(.alwaysTemplate)
             
             if (event.isUrgent!.boolValue)
             {
@@ -80,10 +80,10 @@ class HazardAlertHandleCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = .None
+        self.selectionStyle = .none
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
     }

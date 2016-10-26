@@ -53,17 +53,17 @@ class SignInController: UIViewController, UITextFieldDelegate {
     
     internal var loginViewOriginY:CGFloat = 0
     internal var loginViewOriginX:CGFloat = 0
-    private var isUserAlreadySignedIn:Bool = false
+    fileprivate var isUserAlreadySignedIn:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let paddingUserView = UIView(frame:CGRectMake(0, 0, 7, 7))
+        let paddingUserView = UIView(frame:CGRect(x: 0, y: 0, width: 7, height: 7))
         username.leftView=paddingUserView;
-        username.leftViewMode = UITextFieldViewMode.Always
-        let paddingPasswordView = UIView(frame:CGRectMake(0, 0, 7, 7))
+        username.leftViewMode = UITextFieldViewMode.always
+        let paddingPasswordView = UIView(frame:CGRect(x: 0, y: 0, width: 7, height: 7))
         password.leftView=paddingPasswordView;
-        password.leftViewMode = UITextFieldViewMode.Always
+        password.leftViewMode = UITextFieldViewMode.always
         
         loginViewOriginY = loginView.frame.origin.y
         loginViewOriginX = loginView.frame.origin.x
@@ -74,16 +74,16 @@ class SignInController: UIViewController, UITextFieldDelegate {
         self.username.minimumFontSize = self.username.font!.pointSize
         self.password.minimumFontSize = self.password.font!.pointSize
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignInController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignInController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
     }
     
-    override func viewDidAppear(animated: Bool)
+    override func viewDidAppear(_ animated: Bool)
     {
         self.isUserAlreadySignedIn = Utils.isCredentialsPresent
 
-        if (self.isUserAlreadySignedIn.boolValue)
+        if (self.isUserAlreadySignedIn)
         {
             do {
                 (self.username.text, self.password.text) = try Utils.getCredintials()
@@ -97,11 +97,11 @@ class SignInController: UIViewController, UITextFieldDelegate {
         
     }
 
-    func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(_ notification: Notification) {
         
         self.loginView.translatesAutoresizingMaskIntoConstraints = true;
         
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+        if let keyboardSize = ((notification as NSNotification).userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             
             let height = WINDOW_HEIGHT - keyboardSize.height - loginViewOriginY - loginView.frame.size.height
             
@@ -113,14 +113,14 @@ class SignInController: UIViewController, UITextFieldDelegate {
         
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         self.loginView.frame.origin.y = loginViewOriginY
         self.loginView.translatesAutoresizingMaskIntoConstraints = false;
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: self.view.window)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: self.view.window)
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: self.view.window)
     }
     
     override func didReceiveMemoryWarning() {
@@ -134,18 +134,18 @@ class SignInController: UIViewController, UITextFieldDelegate {
     
     func doSignIn() {
         
-        guard let user = self.username.text,password = self.password.text else {
+        guard let user = self.username.text,let password = self.password.text else {
             return
         }
         
         let window = self.view.window
-        MBProgressHUD.showHUDAddedTo(window!,animated:true)
+        MBProgressHUD.showAdded(to: window!,animated:true)
         
         iService.signIn(self, username: user, password: password) { (code) -> Void in
-            MBProgressHUD.hideHUDForView(window!,animated:true)
+            MBProgressHUD.hide(for: window!,animated:true)
             
             switch code {
-            case let .OK(data):
+            case let .ok(data):
                 guard let json = data!.responseJson else {
                     let message = NSLocalizedString("SignIn.Alert.NoJSON", comment: "")
                     DDLogError(message)
@@ -156,7 +156,7 @@ class SignInController: UIViewController, UITextFieldDelegate {
                     
                     let keychain = UICKeyChainStore(service:keyChainDomain)
                     do {
-                        try keychain.setData(try! NSJSONSerialization.dataWithJSONObject(json, options: []), forKey: user,error:())
+                        try keychain.setData(try! JSONSerialization.data(withJSONObject: json, options: []), forKey: user,error:())
                     } catch {
                         DDLogError("KeyChain Error \(error)")
                     }
@@ -165,15 +165,15 @@ class SignInController: UIViewController, UITextFieldDelegate {
 
                 }
                 
-            case let .Error(error):
+            case let .error(error):
                 let message = error.localizedDescription
                 DDLogError(message)
                 self.showError(message)
-            case .HTTPStatus(let status,_):
-                let message = NSHTTPURLResponse.localizedStringForStatusCode(status)
+            case .httpStatus(let status,_):
+                let message = HTTPURLResponse.localizedString(forStatusCode: status)
                 DDLogError(message)
                 self.showError(message)
-            case .Cancelled:
+            case .cancelled:
                 DDLogInfo("SignIn Cancelled")
             }
 
@@ -182,27 +182,27 @@ class SignInController: UIViewController, UITextFieldDelegate {
         
     }
     
-    private func showError(message:String){
+    fileprivate func showError(_ message:String){
         
-        let alert = UIAlertController(title: NSLocalizedString("SignIn.Alert.Title",comment:"Sign In Error"), message: message, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK Button"), style: .Default, handler: { (alertAction) -> Void in
+        let alert = UIAlertController(title: NSLocalizedString("SignIn.Alert.Title",comment:"Sign In Error"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK Button"), style: .default, handler: { (alertAction) -> Void in
         }))
         
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
         
         
     }
     
     // MARK: UITextFieldDelegate methods
-    func textFieldDidBeginEditing(textField:UITextField) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInController.textFieldDidChange(_:)), name: UITextFieldTextDidChangeNotification, object: textField)
+    func textFieldDidBeginEditing(_ textField:UITextField) {
+        NotificationCenter.default.addObserver(self, selector: #selector(SignInController.textFieldDidChange(_:)), name: NSNotification.Name.UITextFieldTextDidChange, object: textField)
     }
     
-    func textFieldDidEndEditing(textField:UITextField) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UITextFieldTextDidChangeNotification, object: textField)
+    func textFieldDidEndEditing(_ textField:UITextField) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextFieldTextDidChange, object: textField)
     }
     
-    func textFieldDidChange(notification:NSNotification) {
+    func textFieldDidChange(_ notification:Notification) {
         if self.username.text?.isEmpty == true {
         } else if self.password.text?.isEmpty == true {
         } else {
@@ -210,7 +210,7 @@ class SignInController: UIViewController, UITextFieldDelegate {
         
     }
     
-    func textFieldShouldReturn(textField:UITextField) -> Bool{
+    func textFieldShouldReturn(_ textField:UITextField) -> Bool{
         
         if textField == self.username {
             self.password.becomeFirstResponder()

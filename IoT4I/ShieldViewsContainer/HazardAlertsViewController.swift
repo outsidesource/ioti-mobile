@@ -43,8 +43,8 @@ import UIKit
 import CoreData
 
 protocol HazardAlertCellDelegate{
-    func tableViewDidSelectExpandButton(cell: UITableViewCell)
-    func tableViewDidSelectHandleButton(indexPath: NSIndexPath)
+    func tableViewDidSelectExpandButton(_ cell: UITableViewCell)
+    func tableViewDidSelectHandleButton(_ indexPath: IndexPath)
 }
 
 let hazardAlertCellHeight:CGFloat = 107.0
@@ -55,9 +55,9 @@ class HazardAlertsViewController: UITableViewController {
     
     var expandedCellNumber:Int = -1
     
-    lazy var fetchedResultController:NSFetchedResultsController = {
-        
-        let fetchRequest = NSFetchRequest(entityName: NSStringFromClass(HazardEvent))
+    lazy var fetchedResultController:NSFetchedResultsController<HazardEvent> = {
+
+        let fetchRequest = NSFetchRequest<HazardEvent>(entityName: NSStringFromClass(HazardEvent.self))
         
         let hazardTimestampDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
         let hazardHandledDescriptor = NSSortDescriptor(key: "isHandled", ascending: true)
@@ -84,14 +84,14 @@ class HazardAlertsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableView.registerNib(UINib(nibName: "HazardAlertCell", bundle: nil), forCellReuseIdentifier: "HazardAlertCellID")
-        self.tableView.registerNib(UINib(nibName: "HazardAlertHandleCell", bundle: nil), forCellReuseIdentifier: "HazardAlertHandleCellID")
+        self.tableView.register(UINib(nibName: "HazardAlertCell", bundle: nil), forCellReuseIdentifier: "HazardAlertCellID")
+        self.tableView.register(UINib(nibName: "HazardAlertHandleCell", bundle: nil), forCellReuseIdentifier: "HazardAlertHandleCellID")
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44
-        self.tableView.tableFooterView = UIView(frame: CGRectZero)
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HazardAlertsViewController.contentsSizeChanged(_:)), name: UIContentSizeCategoryDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HazardAlertsViewController.contentsSizeChanged(_:)), name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
         
     }
 
@@ -99,19 +99,19 @@ class HazardAlertsViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
-    func contentsSizeChanged(notification:NSNotification){
+    func contentsSizeChanged(_ notification:Notification){
         self.tableView.reloadData()
     }
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         switch segue.identifier! {
         case "HazardDetails":
-            let hzrdDetNavigationController = segue.destinationViewController as! UINavigationController
-            let indexPath = sender as! NSIndexPath
-            (hzrdDetNavigationController.topViewController as! HazardDetailsViewController).hazard = self.fetchedResultController.objectAtIndexPath(indexPath) as? HazardEvent
+            let hzrdDetNavigationController = segue.destination as! UINavigationController
+            let indexPath = sender as! IndexPath
+            (hzrdDetNavigationController.topViewController as! HazardDetailsViewController).hazard = self.fetchedResultController.object(at: indexPath)
             break
         default:
             break
@@ -121,34 +121,34 @@ class HazardAlertsViewController: UITableViewController {
 
     // MARK: UITableViewDataAndDelegate
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        let event = self.fetchedResultController.objectAtIndexPath(indexPath) as! HazardEvent
+        let event = self.fetchedResultController.object(at: indexPath)
         
         if (event.isHandled!.boolValue)
         {
-            return (expandedCellNumber != indexPath.row) ? hazardAlertCellHeight : (hazardAlertCellHeight + 80.0)
+            return (expandedCellNumber != (indexPath as NSIndexPath).row) ? hazardAlertCellHeight : (hazardAlertCellHeight + 80.0)
         }
         
         return 180.0
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return self.fetchedResultController.sections!.count
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let sectionInfo = self.fetchedResultController.sections![section]
         
         return sectionInfo.numberOfObjects
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let event = self.fetchedResultController.objectAtIndexPath(indexPath) as! HazardEvent
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let event = self.fetchedResultController.object(at: indexPath) 
         
         if event.isHandled!.boolValue
         {
-            let cell = tableView.dequeueReusableCellWithIdentifier("HazardAlertCellID", forIndexPath: indexPath) as! HazardAlertCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HazardAlertCellID", for: indexPath) as! HazardAlertCell
             cell.setNeedsLayout()
             cell.layoutIfNeeded()
             cell.event = event
@@ -158,7 +158,7 @@ class HazardAlertsViewController: UITableViewController {
         }
         else
         {
-            let cell = tableView.dequeueReusableCellWithIdentifier("HazardAlertHandleCellID", forIndexPath: indexPath) as! HazardAlertHandleCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HazardAlertHandleCellID", for: indexPath) as! HazardAlertHandleCell
             cell.setNeedsLayout()
             cell.layoutIfNeeded()
             cell.indexPath = indexPath
@@ -174,38 +174,38 @@ class HazardAlertsViewController: UITableViewController {
 
 extension HazardAlertsViewController: NSFetchedResultsControllerDelegate {
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch (type) {
-        case .Insert:
-            self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation:.Automatic)
-        case .Delete:
-            self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
-        case .Update:
-            self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
-        case .Move:
-            self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
-            self.tableView.insertRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
+        case .insert:
+            self.tableView.insertRows(at: [newIndexPath!], with:.automatic)
+        case .delete:
+            self.tableView.deleteRows(at: [indexPath!], with: .automatic)
+        case .update:
+            self.tableView.reloadRows(at: [indexPath!], with: .automatic)
+        case .move:
+            self.tableView.deleteRows(at: [indexPath!], with: .automatic)
+            self.tableView.insertRows(at: [indexPath!], with: .automatic)
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         
         switch(type){
-        case .Insert:
-            self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
-        case .Delete:
-            self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+        case .insert:
+            self.tableView.insertSections(IndexSet(integer: sectionIndex), with: .automatic)
+        case .delete:
+            self.tableView.deleteSections(IndexSet(integer: sectionIndex), with: .automatic)
         default:
             break
         }
         
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
         self.tableView.reloadData()
     }
@@ -214,19 +214,19 @@ extension HazardAlertsViewController: NSFetchedResultsControllerDelegate {
 
 extension HazardAlertsViewController: HazardAlertCellDelegate
 {
-    func tableViewDidSelectExpandButton(cell: UITableViewCell)
+    func tableViewDidSelectExpandButton(_ cell: UITableViewCell)
     {
-        let indexPath:NSIndexPath = self.tableView.indexPathForCell(cell)!
+        let indexPath:IndexPath = self.tableView.indexPath(for: cell)!
         
         if (expandedCellNumber == -1)
         {
-            expandedCellNumber = indexPath.row
-            let cell = self.tableView.cellForRowAtIndexPath(indexPath) as! HazardAlertCell
+            expandedCellNumber = (indexPath as NSIndexPath).row
+            let cell = self.tableView.cellForRow(at: indexPath) as! HazardAlertCell
             cell.setExpanded(true, animated: true)
         }
         else
         {
-            let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: expandedCellNumber, inSection: 0)) as! HazardAlertCell
+            let cell = self.tableView.cellForRow(at: IndexPath(row: expandedCellNumber, section: 0)) as! HazardAlertCell
             cell.setExpanded(false, animated: true)
             expandedCellNumber = -1
         }
@@ -234,13 +234,13 @@ extension HazardAlertsViewController: HazardAlertCellDelegate
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
 
-        self.tableView.separatorStyle = .SingleLine
+        self.tableView.separatorStyle = .singleLine
         
     }
     
-    func tableViewDidSelectHandleButton(indexPath: NSIndexPath)
+    func tableViewDidSelectHandleButton(_ indexPath: IndexPath)
     {
-        self.performSegueWithIdentifier("HazardDetails", sender: indexPath)
+        self.performSegue(withIdentifier: "HazardDetails", sender: indexPath)
     }
 }
 

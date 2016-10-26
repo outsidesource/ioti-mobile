@@ -47,8 +47,8 @@ class SideMenuHeader: UIView {
     @IBOutlet weak var lblInfo: UILabel!
     
     override func awakeFromNib() {
-        imgHeader.image = UIImage(named: "SideMenuHeaderArrowHome")!.imageWithRenderingMode(.AlwaysTemplate)
-        imgHeader.tintColor =  UIColor.whiteColor()
+        imgHeader.image = UIImage(named: "SideMenuHeaderArrowHome")!.withRenderingMode(.alwaysTemplate)
+        imgHeader.tintColor =  UIColor.white
 
     }
 
