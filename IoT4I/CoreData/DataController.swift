@@ -40,6 +40,7 @@
 
 import Foundation
 import CoreData
+import CocoaLumberjack
 
 open class DataController:NSObject {
     
@@ -161,6 +162,22 @@ open class DataController:NSObject {
         }
     }
     
+    open func deleteAllObjects(_ dataType:String)
+    {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: dataType)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
+        deleteRequest.resultType = .resultTypeCount
+        
+        do {
+            let batchDeleteResult = try self.writerContext.execute(deleteRequest) as? NSBatchDeleteResult
+            DDLogError("number of " + dataType + " records deleted -> " + String(describing: batchDeleteResult?.result ?? 0))
+            self.writerContext.reset()
+            
+        } catch {
+            let updateError = error as NSError
+            DDLogError("\(updateError), \(updateError.userInfo)")
+        }
+    }
     
 }
 

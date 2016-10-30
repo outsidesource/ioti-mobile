@@ -237,7 +237,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("Device Token: \(deviceToken)")
         
         let push = IMFPushClient.sharedInstance()
-            push?.register(withDeviceToken: deviceToken, completionHandler: { (response, error) -> Void in
+        
+        push?.initialize(withAppGUID: PushRoute, clientSecret: PushSecret)
+        push?.register(withDeviceToken: deviceToken) { (response, error) in
             if error != nil {
                 print("Error during device registration \(error.debugDescription)")
             }
@@ -245,15 +247,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let json = response?.responseJson
                 if let deviceId = json?["deviceId"] as? String {
                     lastDeviceId = deviceId
+                    
+                    iService.postAPNToken(self, completion: { (code) in
+                        switch code {
+                        case .cancelled:
+                            DDLogInfo("Cancelled")
+                        case let .error(error):
+                            DDLogError("postAPNToken: " + error.localizedDescription)
+                        case let .httpStatus(status,_):
+                            let message = HTTPURLResponse.localizedString(forStatusCode: status)
+                            DDLogError("postAPNToken: " + message)
+                        // Json object
+                        case .ok(_):
+                            DDLogInfo("APN OK")
+                        }
+                    })
+                    
                 } else {
                     DDLogError("Missing Device Id for push registration")
                 }
                 
                 print("Response during device registration json: \(response?.responseJson.description)")
             }
-        })
+        }
     }
-    
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error){
         
         DDLogError("APNS Registration Error \(error)")

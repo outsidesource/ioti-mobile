@@ -75,12 +75,7 @@ open class InsuranceService: NSObject
         
         IMFClient.sharedInstance().initialize(withBackendRoute: applicationRoute, backendGUID: applicationId)
         IMFClient.sharedInstance().register(mcaAuthenticationDelegate,forRealm: applicationRealName)
-        
-        //Register to APN after initializing BlueMix backend
-        let settings = UIUserNotificationSettings(types: [.badge,.alert, .sound], categories: nil)
-        UIApplication.shared.registerUserNotificationSettings(settings)
-        UIApplication.shared.registerForRemoteNotifications()
-
+    
     }
     
     open func signIn(_ delegate:AnyObject, username:String, password:String ,completion: @escaping (_ code: HTTPOperationResult) -> Void)

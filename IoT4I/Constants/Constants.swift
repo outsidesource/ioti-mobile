@@ -44,11 +44,11 @@ import JavaScriptCore
 //////////////////////////////////////////////////////
 //PUT APPLICATION ROUTE HERE
 //applicationRoute exampe: https://YourApplicationRoute.mybluemix.net Without "/" at the end of the url
-let applicationRoute =
+let applicationRoute = ""
 
 //PUT APPLICATION CLIENTID HERE
 //applicationId exampe: abcdefgh-abcd-abcd-abcd-abcdabcdabcd
-let applicationId =
+let applicationId = ""
 //////////////////////////////////////////////////////
 
 let DEMO_MODE:Bool = true
@@ -68,9 +68,14 @@ let APIxShieldsPath = "/reg/shields"
 let APIxDevicesPath = "/reg/devices"
 let APIxPromotionsPath = "/reg/promotions"
 let APIxHazardEventsPath = "/reg/hazardEvents"
+let APIxConfigPath = "/reg/config"
 let kGET = "GET"
 let kPost = "POST"
 let kDelete = "DELETE"
+
+// Push Route and Secret, pulled from backend
+var PushRoute = ""
+var PushSecret = ""
 
 let applicationRealName = "IoT4I"
 var lastDeviceId:String?

@@ -54,19 +54,9 @@ class InsuranceUtils {
             
             if (success)
             {
-                iService.postAPNToken(self, completion: { (code) in
-                    switch code {
-                    case .cancelled:
-                        DDLogInfo("Cancelled")
-                    case let .error(error):
-                        DDLogError(error.localizedDescription)
-                    case let .httpStatus(status,_):
-                        let message = HTTPURLResponse.localizedString(forStatusCode: status)
-                        DDLogError(message)
-                    // Json object
-                    case .ok(_):
-                        DDLogInfo("APN OK")
-                    }
+                
+                self.getConfigData({ (success) in
+                    
                 })
                 
                 self.getDevices({ (success) in
@@ -223,6 +213,60 @@ class InsuranceUtils {
                         DDLogError("Core Data Error \(error)")
                     }
                 }
+            }
+        }
+    }
+    
+    static func getConfigData(_ completion: @escaping (_ success: Bool) -> Void) {
+        iService.apiGetPathData(self, path: APIxConfigPath, method: kGET) { (code) in
+            switch code {
+            case .cancelled:
+                DDLogInfo("Cancelled")
+                break
+            case let .error(error):
+                DDLogError("getConfigData: " + error.localizedDescription)
+                completion(false)
+                break
+            case let .httpStatus(status,json):
+                let message = HTTPURLResponse.localizedString(forStatusCode: status)
+                DDLogError("getConfigData: " + message)
+                if let json = json {
+                    DDLogVerbose("\(json)")
+                }
+                completion(false)
+                break
+            // Json object
+            case let .ok(data):
+                
+                guard let json = data!.responseJson else {
+                    DDLogError("No JSON")
+                    return
+                }
+                
+                guard let imfPushJson = json["imfpush"] as? [String:AnyObject] else {
+                    DDLogError("No JSON, imfPushJson")
+                    return
+                }
+                
+                guard let kPushRoute = imfPushJson["appGuid"] as? String else {
+                    DDLogError("No JSON, imfPushJson")
+                    return
+                }
+                
+                guard let kPushSecret = imfPushJson["clientSecret"] as? String else {
+                    DDLogError("No JSON, imfPushJson")
+                    return
+                }
+                
+                PushRoute = kPushRoute
+                PushSecret = kPushSecret
+                
+                //Register to APN after initializing BlueMix backend
+                let settings = UIUserNotificationSettings(types: [.badge,.alert, .sound], categories: nil)
+                UIApplication.shared.registerUserNotificationSettings(settings)
+                UIApplication.shared.registerForRemoteNotifications()
+                
+                break
             }
         }
     }

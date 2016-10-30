@@ -42,10 +42,13 @@
 import UIKit
 import CoreData
 import SWRevealViewController
+import MBProgressHUD
+import CocoaLumberjack
 
 class DevicesViewController: UITableViewController {
 
     @IBOutlet weak var menuButton:UIBarButtonItem!
+    @IBOutlet weak var refreshButton:UIBarButtonItem!
     
     lazy var fetchedResultController:NSFetchedResultsController<Device> = {
         
@@ -75,7 +78,10 @@ class DevicesViewController: UITableViewController {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
         }
-                
+        
+        refreshButton.target = self
+        refreshButton.action = #selector(DevicesViewController.refreshDevices)
+        
         self.tableView.register(UINib(nibName: "DeviceTableViewCell", bundle: nil), forCellReuseIdentifier: "DeviceTableViewCellID")
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -89,6 +95,30 @@ class DevicesViewController: UITableViewController {
     
     func contentsSizeChanged(_ notification:Notification){
         self.tableView.reloadData()
+    }
+    
+    func refreshDevices() {
+        
+        DispatchQueue.main.async(execute: {
+            dataController.deleteAllObjects(NSStringFromClass(Device.self))
+            do {
+                _ = try self.fetchedResultController.performFetch()
+            } catch let err as NSError {
+                DDLogError(err.description)
+            }
+            self.tableView.reloadData()
+        })
+        
+        
+        let window = self.view.window
+        MBProgressHUD.showAdded(to: window!,animated:true)
+        InsuranceUtils.getDevices({ (success) in
+            DDLogInfo("getDevices Success \(success)")
+            DispatchQueue.main.async(execute: {
+                MBProgressHUD.hide(for: window!,animated:true)
+            })
+        })
+        
     }
     
     // MARK: UITableViewDataAndDelegate
