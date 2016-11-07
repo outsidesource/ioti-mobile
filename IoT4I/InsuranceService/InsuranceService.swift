@@ -75,7 +75,8 @@ open class InsuranceService: NSObject
         
         IMFClient.sharedInstance().initialize(withBackendRoute: applicationRoute, backendGUID: applicationId)
         IMFClient.sharedInstance().register(mcaAuthenticationDelegate,forRealm: applicationRealName)
-    
+        IMFAuthorizationManager.sharedInstance().initialize(withTenantId: mcaTenantId)
+        
     }
     
     open func signIn(_ delegate:AnyObject, username:String, password:String ,completion: @escaping (_ code: HTTPOperationResult) -> Void)

@@ -83,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let documentsFileManager = DDLogFileManagerDefault(logsDirectory:Utils.documentsDirectory.path)
         
         let fileLogger: DDFileLogger = DDFileLogger(logFileManager: documentsFileManager) // File Logger
-        fileLogger.rollingFrequency = 60*60*24  // 24 hours
+        fileLogger.rollingFrequency = TimeInterval(60*60*24)  // 24 hours
         fileLogger.logFileManager.maximumNumberOfLogFiles = 7
         DDLog.add(fileLogger)
         

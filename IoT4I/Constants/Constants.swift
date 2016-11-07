@@ -44,11 +44,14 @@ import JavaScriptCore
 //////////////////////////////////////////////////////
 //PUT APPLICATION ROUTE HERE
 //applicationRoute exampe: https://YourApplicationRoute.mybluemix.net Without "/" at the end of the url
-let applicationRoute = ""
+let applicationRoute =
 
-//PUT APPLICATION CLIENTID HERE
+//PUT APPLICATION CLIENTID HERE, API GUID
 //applicationId exampe: abcdefgh-abcd-abcd-abcd-abcdabcdabcd
-let applicationId = ""
+let applicationId =
+
+//PUT MCA TENANT ID HERE, FOUND IN MCA MOBILE OPTIONS
+let mcaTenantId = 
 //////////////////////////////////////////////////////
 
 let DEMO_MODE:Bool = true

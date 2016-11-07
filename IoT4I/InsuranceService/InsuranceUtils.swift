@@ -107,17 +107,20 @@ class InsuranceUtils {
                 moc.perform {
                     guard let json = data!.responseJson else {
                         DDLogError("No JSON")
+                        completion(false)
                         return
                     }
                     DDLogVerbose("\(json)")
                     guard let total = json["total"] as? Int , total > 0 else {
                         DDLogError("No total for Shields")
+                        completion(false)
                         return
                     }
                     DDLogVerbose("number of shields \(total)")
                     
                     guard let shields = json["shields"] as? [[String:AnyObject]] else {
                         DDLogError("No Array for shields")
+                        completion(false)
                         return
                     }
                     
@@ -295,18 +298,21 @@ class InsuranceUtils {
                 moc.perform {
                     guard let json = data!.responseJson else {
                         DDLogError("No JSON")
+                        completion(false)
                         return
                     }
                     DDLogVerbose("\(json)")
                     
                     guard let total = json["total"] as? Int , total > 0 else {
                         DDLogError("No total for Devices")
+                        completion(false)
                         return
                     }
                     DDLogVerbose("number of devices \(total)")
                     
                     guard let devices = json["devices"] as? [[String:AnyObject]] else {
                         DDLogError("No Array for devices")
+                        completion(false)
                         return
                     }
                     
@@ -362,18 +368,21 @@ class InsuranceUtils {
                         
                         guard let json = data!.responseJson else {
                             DDLogError("No JSON")
+                            completion(false)
                             return
                         }
                         DDLogVerbose("\(json)")
                         
                         guard let total = json["total"] as? Int , total > 0 else {
                             DDLogError("No total for HazardEvents")
+                            completion(false)
                             return
                         }
                         DDLogVerbose("number of hazards \(total)")
                         
                         guard let newHazardEvents = json["hazardEvents"] as? [[String:AnyObject]] else {
                             DDLogError("No Array for hazards")
+                            completion(false)
                             return
                         }
 

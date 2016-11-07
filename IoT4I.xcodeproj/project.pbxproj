@@ -677,7 +677,7 @@
 				INFOPLIST_FILE = IoT4I/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.iot.insurance;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iot.Insurance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = IoT4I/BridgeHeader.h;
@@ -699,7 +699,7 @@
 				INFOPLIST_FILE = IoT4I/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.iot.insurance;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iot.Insurance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = IoT4I/BridgeHeader.h;
