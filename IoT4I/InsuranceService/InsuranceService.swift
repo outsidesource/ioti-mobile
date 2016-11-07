@@ -75,7 +75,7 @@ open class InsuranceService: NSObject
         
         IMFClient.sharedInstance().initialize(withBackendRoute: applicationRoute, backendGUID: applicationId)
         IMFClient.sharedInstance().register(mcaAuthenticationDelegate,forRealm: applicationRealName)
-        IMFAuthorizationManager.sharedInstance().initialize(withTenantId: mcaTenantId)
+        IMFAuthorizationManager.sharedInstance().initialize(withTenantId: applicationId)
         
     }
     
@@ -111,7 +111,7 @@ open class InsuranceService: NSObject
                 completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
                 
                 switch response?.httpStatus
                 {
@@ -138,7 +138,7 @@ open class InsuranceService: NSObject
                 completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
                 
                 switch response?.httpStatus
                 {
@@ -167,7 +167,7 @@ open class InsuranceService: NSObject
                 completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
                 
                 switch response?.httpStatus
                 {
@@ -196,7 +196,7 @@ open class InsuranceService: NSObject
                 completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
                 
                 switch response?.httpStatus
                 {
@@ -223,7 +223,7 @@ open class InsuranceService: NSObject
                 completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
                 
                 switch response?.httpStatus
                 {
@@ -251,7 +251,7 @@ open class InsuranceService: NSObject
                 completion(.error(error as! NSError))
             } else {
                 
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus)
+                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
                 
                 switch response?.httpStatus
                 {
