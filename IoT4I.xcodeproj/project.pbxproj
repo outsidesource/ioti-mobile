@@ -92,6 +92,7 @@
 		8F3E65FD1CBFAAED000F7B66 /* HazardDetailsStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = HazardDetailsStoryboard.storyboard; path = Storyboards/HazardDetailsStoryboard.storyboard; sourceTree = "<group>"; };
 		8F461F5E1CBE560500BEF248 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceTableViewCell.swift; path = CellsHeadersFooters/DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		8F461F5F1CBE560500BEF248 /* DeviceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DeviceTableViewCell.xib; path = CellsHeadersFooters/DeviceTableViewCell.xib; sourceTree = "<group>"; };
+		8F48C0721DDB0DEE00258983 /* IoT4I.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IoT4I.entitlements; sourceTree = "<group>"; };
 		8F496FCA1C997B4C00E67A91 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Constants/Constants.swift; sourceTree = "<group>"; };
 		8F496FF61C999BF800E67A91 /* InsuranceUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InsuranceUtils.swift; path = InsuranceService/InsuranceUtils.swift; sourceTree = "<group>"; };
 		8F496FF91C999C9800E67A91 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = Models/Utils.swift; sourceTree = "<group>"; };
@@ -337,6 +338,7 @@
 		8FEBCF761C99606100DDE6B6 /* IoT4I */ = {
 			isa = PBXGroup;
 			children = (
+				8F48C0721DDB0DEE00258983 /* IoT4I.entitlements */,
 				8FE43B671CFEC54000CCB902 /* DevicesViews */,
 				8F38A2C41CA1649300A40C05 /* CoreData */,
 				8F5BAABF1CB248F1007F3F41 /* TipsCollectionController */,
@@ -379,12 +381,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8FEBCF891C99606100DDE6B6 /* Build configuration list for PBXNativeTarget "IoT4I" */;
 			buildPhases = (
-				CD54D50DDF846ED74E8B3EBD /* Check Pods Manifest.lock */,
+				CD54D50DDF846ED74E8B3EBD /* [CP] Check Pods Manifest.lock */,
 				8FEBCF701C99606100DDE6B6 /* Sources */,
 				8FEBCF711C99606100DDE6B6 /* Frameworks */,
 				8FEBCF721C99606100DDE6B6 /* Resources */,
-				CD69617C33522F3BDE1BB409 /* Embed Pods Frameworks */,
-				6C667535A9D41F78034E6B42 /* Copy Pods Resources */,
+				CD69617C33522F3BDE1BB409 /* [CP] Embed Pods Frameworks */,
+				6C667535A9D41F78034E6B42 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -409,6 +411,11 @@
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 76CMF53Q35;
 						LastSwiftMigration = 0800;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -460,14 +467,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6C667535A9D41F78034E6B42 /* Copy Pods Resources */ = {
+		6C667535A9D41F78034E6B42 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -475,29 +482,29 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-IoT4I/Pods-IoT4I-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CD54D50DDF846ED74E8B3EBD /* Check Pods Manifest.lock */ = {
+		CD54D50DDF846ED74E8B3EBD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		CD69617C33522F3BDE1BB409 /* Embed Pods Frameworks */ = {
+		CD69617C33522F3BDE1BB409 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -671,6 +678,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = IoT4I/IoT4I.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 76CMF53Q35;
@@ -693,6 +701,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = IoT4I/IoT4I.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 76CMF53Q35;
