@@ -47,7 +47,7 @@ import JavaScriptCore
 
 let applicationRoute =
 
-//PUT APPLICATION CLIENTID HERE, IOT API APPLICATION GUID
+//PUT MCA APP GUID / TENANTID HERE, IOT API APPLICATION GUID
 //applicationId exampe: abcdefgh-abcd-abcd-abcd-abcdabcdabcd
 
 let applicationId =
