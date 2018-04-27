@@ -37,5 +37,5 @@
 //  In the event Licensee provides feedback to IBM regarding the Program, Licensee agrees to assign to IBM all right, title, and interest (including ownership of copyright) in any data, suggestions, or written materials that 1) are related to the Program and 2) that Licensee provides to IBM.
 
 
-#import <IMFCore/IMFCore.h>
-#import <IMFPush/IMFPush.h>
+//#import <IMFCore/IMFCore.h>
+//#import <IMFPush/IMFPush.h>
