@@ -6,7 +6,7 @@ target 'IoT4I' do
     pod 'UICollectionView+NSFetchedResultsController', '1.2.1'
     pod 'MBProgressHUD', '0.9.2'
     pod 'MQTTClient', '0.7.4'
-    pod 'CocoaLumberjack/Swift' ,'2.2.0'
+    pod 'CocoaLumberjack/Swift' ,'3.3.0'
     pod 'UICKeyChainStore', '2.1.0'
     pod 'Reachability', '3.2'
     pod 'DZNEmptyDataSet' ,'1.7.3'
