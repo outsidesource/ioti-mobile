@@ -701,7 +701,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6E9A5DBAFC6D8DA3C08FDC66 /* Pods-IoT4I.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = IoT4I/IoT4I.entitlements;
@@ -724,7 +723,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 351CAD48265F68003108499B /* Pods-IoT4I.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = IoT4I/IoT4I.entitlements;
