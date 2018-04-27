@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, ‘9.0’
+platform :ios, '9.0'
 use_frameworks!
 
 target 'IoT4I' do
@@ -14,4 +14,3 @@ pod 'IMFCore', '1.2.1'
 pod 'IMFPush', '1.1.4'
 pod 'SWRevealViewController', '2.3.0'
 end
-
