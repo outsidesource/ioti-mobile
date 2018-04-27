@@ -4,16 +4,14 @@ PODS:
     - BMSAnalyticsAPI (~> 2.2)
   - BMSPush (3.3.2):
     - BMSCore (~> 2.0)
-  - CocoaLumberjack (2.2.0):
-    - CocoaLumberjack/Default (= 2.2.0)
-    - CocoaLumberjack/Extensions (= 2.2.0)
-  - CocoaLumberjack/Core (2.2.0)
-  - CocoaLumberjack/Default (2.2.0):
-    - CocoaLumberjack/Core
-  - CocoaLumberjack/Extensions (2.2.0):
+  - CocoaLumberjack (3.3.0):
+    - CocoaLumberjack/Default (= 3.3.0)
+    - CocoaLumberjack/Extensions (= 3.3.0)
+  - CocoaLumberjack/Default (3.3.0)
+  - CocoaLumberjack/Extensions (3.3.0):
     - CocoaLumberjack/Default
-  - CocoaLumberjack/Swift (2.2.0):
-    - CocoaLumberjack/Extensions
+  - CocoaLumberjack/Swift (3.3.0):
+    - CocoaLumberjack/Default
   - DZNEmptyDataSet (1.7.3)
   - MBProgressHUD (0.9.2)
   - MQTTClient (0.7.4):
@@ -28,7 +26,7 @@ PODS:
 DEPENDENCIES:
   - BMSCore (= 2.3.5)
   - BMSPush (= 3.3.2)
-  - CocoaLumberjack/Swift (= 2.2.0)
+  - CocoaLumberjack/Swift (= 3.3.0)
   - DZNEmptyDataSet (= 1.7.3)
   - MBProgressHUD (= 0.9.2)
   - MQTTClient (= 0.7.4)
@@ -41,7 +39,7 @@ SPEC CHECKSUMS:
   BMSAnalyticsAPI: d259379069bb11d2ff365bf5b796a2677dfc3849
   BMSCore: 446c16a7dbe14b5019751617a00dd947c65cca82
   BMSPush: 14b286eb476c45d20f4f14c644495bba446c331d
-  CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
+  CocoaLumberjack: 3c8c74683302f9012bb168e1c4b7ae3c0b558431
   DZNEmptyDataSet: dd7cca17c1d07dfa78956859b1e70a52505678ef
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MQTTClient: 1c1bedf87249a317ee9324b93252867bbc443ec7
@@ -50,6 +48,6 @@ SPEC CHECKSUMS:
   UICKeyChainStore: f1cbd42216a113f0165de1e733e62905b8823432
   UICollectionView+NSFetchedResultsController: 1d53aef16f1a6371a1c58eba701f40740826f8c8
 
-PODFILE CHECKSUM: 570327febb0fd78519f8b90cef64e52d6c969fbf
+PODFILE CHECKSUM: fcf4b8fb0b17a542beba8177eca16c5182016631
 
 COCOAPODS: 1.4.0
