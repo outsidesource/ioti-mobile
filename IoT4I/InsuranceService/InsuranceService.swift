@@ -42,12 +42,13 @@
 import UIKit
 import Foundation
 import CocoaLumberjack
+import BMSCore
 
 public enum HTTPOperationResult {
     
-    case ok(AnyObject?)
+    case ok(Response?)
     case cancelled
-    case httpStatus(Int,AnyObject?)
+    case httpStatus(Int, Response?)
     case error(NSError)
     
 }
@@ -68,216 +69,140 @@ open class InsuranceService: NSObject
     
     open internal(set) var password:String?
 
-    internal var mcaAuthenticationDelegate = MCAAuthenticationDelegate()
+//    internal var mcaAuthenticationDelegate = MCAAuthenticationDelegate()
     
     public init(backendRoute:String, backendGUID:String)
     {
         
-        IMFClient.sharedInstance().initialize(withBackendRoute: applicationRoute, backendGUID: applicationId)
-        IMFClient.sharedInstance().register(mcaAuthenticationDelegate,forRealm: applicationRealName)
-        IMFAuthorizationManager.sharedInstance().initialize(withTenantId: applicationId)
+        BMSClient.sharedInstance.initialize(bluemixAppRoute: backendRoute, bluemixAppGUID: backendGUID, bluemixRegion: BMSClient.Region.usSouth)
+        //BMSClient.sharedInstance.register(mcaAuthenticationDelegate,forRealm: applicationRealName)
+        
+        // TODO:
+        //BMSClient.sharedInstance.authorizationManager.initialize(withTenantId: applicationId)
+        
+    }
+    
+    open func sendRequest(_ request: Request, completion: @escaping (_ code: HTTPOperationResult) -> Void) {
+        
+        request.send { (response, error) -> Void in
+            
+            if let error = error {
+                
+                completion(.error(error as NSError))
+                
+            } else if let response = response {
+                
+                self.logRequestResponse(request, response: response)
+                
+                if response.isSuccessful {
+                    completion(.ok(response))
+                } else {
+                    completion(.httpStatus(Int(response.statusCode ?? -1), response))
+                }
+                
+            }
+        }
+        
+    }
+    
+    open func logRequestResponse(_ request: Request, response: Response) {
+        
+        debugPrint(request.resourceUrl + " resposeHttpStatus: ", response.statusCode ?? "-1")
         
     }
     
     open func signIn(_ delegate:AnyObject, username:String, password:String ,completion: @escaping (_ code: HTTPOperationResult) -> Void)
     {
-        mcaAuthenticationDelegate.user = username
-        mcaAuthenticationDelegate.password = password
         
-        let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/protected"
-        let request = IMFResourceRequest(path: requestPath, method: kGET)
+        // TODO:
+//        mcaAuthenticationDelegate.user = username
+//        mcaAuthenticationDelegate.password = password
         
-        request?.send { (response, error) -> Void in
+        let requestPath = "/reg/protected"
+        let request = Request(url: requestPath)
+        
+        request.send { (response, error) -> Void in
+            
             if (error != nil){
-                completion(.error(error as! NSError))
+                
+                completion(.error(error! as NSError))
+                
             } else {
+                
                 self.user = username
                 self.password = password
-                
+
                 Utils.writeCredential(username, password: password)
                 self.didSignedIn = true
                 completion(.ok(response))
-            }
-        };
-    }
-    
-    open func deleteDevicebyId(_ delegate:AnyObject, deviceId:String?, completion: @escaping (_ code: HTTPOperationResult) -> Void)
-    {
-        let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/device/" + (deviceId ?? "")
-        let request = IMFResourceRequest(path: requestPath, method: kDelete)
-        
-        request?.send { (response, error) -> Void in
-            if (error != nil){
-                completion(.error(error as! NSError))
-            } else {
-                
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
-                
-                switch response?.httpStatus
-                {
-                case 200?:
-                    completion(.ok(response))
-                    break
-                    
-                default:
-                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
-                    break
-                }
                 
             }
-        };
+        }
     }
     
-    open func updateDevicebyId(_ delegate:AnyObject, deviceId:String?, attributeName:String?,  attributeValue:String?, completion: @escaping (_ code: HTTPOperationResult) -> Void)
-    {
-        let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/device/" + (deviceId ?? "X") + "/" + (attributeName ?? "X") + "/" + (attributeValue ?? "X")
-        let request = IMFResourceRequest(path: requestPath, method: kPost)
+    open func deleteDevicebyId(_ delegate:AnyObject, deviceId:String?, completion: @escaping (_ code: HTTPOperationResult) -> Void) {
         
-        request?.send { (response, error) -> Void in
-            if (error != nil){
-                completion(.error(error as! NSError))
-            } else {
-                
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
-                
-                switch response?.httpStatus
-                {
-                case 200?:
-                    completion(.ok(response))
-                    break
-                    
-                default:
-                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
-                    break
-                }
-                
-            }
-        };
+        let requestPath = "/reg/device/" + (deviceId ?? "")
+        let request = Request(url: requestPath, method: .DELETE)
+        sendRequest(request, completion: completion)
+        
     }
     
-    open func apiGetPathData(_ delegate: AnyObject, path: String, method: String,completion: @escaping (_ code: HTTPOperationResult) -> Void)
-    {
-        debugPrint("API REQUEST " + path)
+    
+    
+    open func updateDevicebyId(_ delegate:AnyObject, deviceId:String?, attributeName:String?,  attributeValue:String?, completion: @escaping (_ code: HTTPOperationResult) -> Void) {
         
-        let requestPath = IMFClient.sharedInstance().backendRoute + path
-        let request = IMFResourceRequest(path: requestPath, method: method)
+        let requestPath = "/reg/device/\(deviceId ?? "X")/\(attributeName ?? "X")/\(attributeValue ?? "X")"
+        let request = Request(url: requestPath)
+        sendRequest(request, completion: completion)
         
-        request?.send { (response, error) -> Void in
-            if (error != nil){
-                completion(.error(error as! NSError))
-            } else {
-                
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
-                
-                switch response?.httpStatus
-                {
-                case 200?:
-                    completion(.ok(response))
-                    break
-                    
-                default:
-                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
-                    break
-                }
-            }
-        };
     }
     
-    open func postWinkToken(_ delegate:AnyObject, token:String, completion: @escaping (_ code: HTTPOperationResult) -> Void)
-    {
-        let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/auth/" + token
-        let request = IMFResourceRequest(path: requestPath, method: kPost)
+    open func apiGetPathData(_ delegate: AnyObject, path: String, method: String,completion: @escaping (_ code: HTTPOperationResult) -> Void) {
         
-        debugPrint("TOKEN")
-        debugPrint(token)
+        let requestPath = path
+        let request = Request(url: requestPath)
+        sendRequest(request, completion: completion)
         
-        request?.send { (response, error) -> Void in
-            if (error != nil){
-                completion(.error(error as! NSError))
-            } else {
-                
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
-                
-                switch response?.httpStatus
-                {
-                case 200?:
-                    completion(.ok(response))
-                    break
-                    
-                default:
-                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
-                    break
-                }
-                
-            }
-        };
     }
     
-    open func postAPNToken(_ delegate:AnyObject, completion: @escaping (_ code: HTTPOperationResult) -> Void)
-    {
-        let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/user/setdeviceid/" + (lastDeviceId ?? "")
-        let request = IMFResourceRequest(path: requestPath, method: kPost)
+    open func postWinkToken(_ delegate:AnyObject, token:String, completion: @escaping (_ code: HTTPOperationResult) -> Void) {
         
-        request?.send { (response, error) -> Void in
-            if (error != nil){
-                completion(.error(error as! NSError))
-            } else {
-                
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
-                
-                switch response?.httpStatus
-                {
-                case 200?:
-                    completion(.ok(response))
-                    break
-                    
-                default:
-                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
-                    break
-                }
-                
-            }
-        };
+        let requestPath = "/reg/auth/" + token
+        let request = Request(url: requestPath)
+        sendRequest(request, completion: completion)
+    
     }
     
-    open func postHazardAction(_ delegate:AnyObject, hazardId:String, hazardAction:String, completion: @escaping (_ code: HTTPOperationResult) -> Void)
-    {
+    open func postAPNToken(_ delegate:AnyObject, completion: @escaping (_ code: HTTPOperationResult) -> Void) {
+        
+        let requestPath = "/reg/user/setdeviceid/" + (lastDeviceId ?? "")
+        let request = Request(url: requestPath)
+        sendRequest(request, completion: completion)
+        
+    }
+    
+    open func postHazardAction(_ delegate:AnyObject, hazardId:String, hazardAction:String, completion: @escaping (_ code: HTTPOperationResult) -> Void) {
 
-        let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/hazardEvents/setStatus/" + hazardId + "/" + hazardAction
-        let request = IMFResourceRequest(path: requestPath, method: kPost)
-
-        request?.send { (response, error) -> Void in
-            if (error != nil){
-                completion(.error(error as! NSError))
-            } else {
-                
-                debugPrint(requestPath + " resposeHttpStatus: ", response?.httpStatus ?? "-1")
-                
-                switch response?.httpStatus
-                {
-                case 200?:
-                    completion(.ok(response))
-                    break
-                    
-                default:
-                    completion(.httpStatus(Int(response!.httpStatus),response?.responseJson as AnyObject?))
-                    break
-                }
-                
-            }
-        };
+        let requestPath = "/reg/hazardEvents/setStatus/" + hazardId + "/" + hazardAction
+        let request = Request(url: requestPath)
+        sendRequest(request, completion: completion)
         
     }
     
     open func signOut(_ completion: @escaping (_ code: HTTPOperationResult) -> Void) {
         
-        let requestPath = IMFClient.sharedInstance().backendRoute + "/reg/logout"
-        let request = IMFResourceRequest(path: requestPath, method: kPost)
+        let requestPath = "/reg/logout"
+        let request = Request(url: requestPath)
         
-        request?.send { (response, error) -> Void in
-            if (nil != error){
-                completion(.error(error as! NSError))
+        request.send { (response, error) -> Void in
+            
+            if let error = error {
+                
+                completion(.error(error as NSError))
+                
             } else {
+                
                 self.didSignedIn = false
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
                     Utils.removeCredential()
@@ -285,43 +210,57 @@ open class InsuranceService: NSObject
                         completion(.ok(response))
                     }
                 }
+                
             }
-        };
+        }
     }
     
 }
 
+// TODO:
+//open class MCAAuthenticationDelegate : NSObject, IMFAuthenticationDelegate{
+//
+//    //MARK: IMFAuthenticationDelegate
+//
+//    open var user:String = ""
+//    open var password:String = ""
+//
+//    open func authenticationContext(_ context: IMFAuthenticationContext!, didReceiveAuthenticationChallenge challenge: [AnyHashable: Any]!) {
+//
+//        debugPrint("didReceiveAuthenticationChallenge :: %@", challenge)
+//
+//        let challengeAnswer: [String:String] = [
+//            "username":self.user,
+//            "password":self.password
+//        ]
+//
+//        context.submitAuthenticationChallengeAnswer(challengeAnswer)
+//
+//    }
+//
+//    open func authenticationContext(_ context: IMFAuthenticationContext!, didReceiveAuthenticationSuccess userInfo: [AnyHashable: Any]!) {
+//        debugPrint("didReceiveAuthenticationSuccess")
+//
+//        context.submitAuthenticationSuccess()
+//    }
+//
+//    open func authenticationContext(_ context: IMFAuthenticationContext!, didReceiveAuthenticationFailure userInfo: [AnyHashable: Any]!) {
+//        debugPrint("didReceiveAuthenticationFailure")
+//
+//        context.submitAuthenticationFailure(userInfo)
+//
+//    }
+//
+//}
 
-open class MCAAuthenticationDelegate : NSObject, IMFAuthenticationDelegate{
+extension Response {
     
-    //MARK: IMFAuthenticationDelegate
-
-    open var user:String = ""
-    open var password:String = ""
-    
-    open func authenticationContext(_ context: IMFAuthenticationContext!, didReceiveAuthenticationChallenge challenge: [AnyHashable: Any]!) {
+    var responseJson: Any? {
         
-        debugPrint("didReceiveAuthenticationChallenge :: %@", challenge)
-
-        let challengeAnswer: [String:String] = [
-            "username":self.user,
-            "password":self.password
-        ]
-        
-        context.submitAuthenticationChallengeAnswer(challengeAnswer)
-        
-    }
-    
-    open func authenticationContext(_ context: IMFAuthenticationContext!, didReceiveAuthenticationSuccess userInfo: [AnyHashable: Any]!) {
-        debugPrint("didReceiveAuthenticationSuccess")
-        
-        context.submitAuthenticationSuccess()
-    }
-
-    open func authenticationContext(_ context: IMFAuthenticationContext!, didReceiveAuthenticationFailure userInfo: [AnyHashable: Any]!) {
-        debugPrint("didReceiveAuthenticationFailure")
-        
-        context.submitAuthenticationFailure(userInfo)
+        if let responseData = self.responseData {
+            return try? JSONSerialization.jsonObject(with: responseData, options: [])
+        }
+        return nil
         
     }
     

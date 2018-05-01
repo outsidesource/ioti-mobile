@@ -42,6 +42,7 @@ import UIKit
 import CoreData
 import MBProgressHUD
 import CocoaLumberjack
+import BMSCore
 
 class InsuranceUtils {
     
@@ -105,7 +106,7 @@ class InsuranceUtils {
             case let .ok(data):
                 let moc = dataController.writerContext
                 moc.perform {
-                    guard let json = data!.responseJson else {
+                    guard let json = data?.responseJson as? [String: Any] else {
                         DDLogError("No JSON")
                         completion(false)
                         return
@@ -174,7 +175,7 @@ class InsuranceUtils {
             case let .ok(data):
                 let moc = dataController.writerContext
                 moc.perform {
-                    guard let json = data!.responseJson else {
+                    guard let json = data?.responseJson as? [String: Any] else {
                         DDLogError("No JSON")
                         completion(false)
                         return
@@ -241,7 +242,7 @@ class InsuranceUtils {
             // Json object
             case let .ok(data):
                 
-                guard let json = data!.responseJson else {
+                guard let json = data?.responseJson as? [String: Any] else {
                     DDLogError("No JSON")
                     return
                 }
@@ -296,7 +297,7 @@ class InsuranceUtils {
             case let .ok(data):
                 let moc = dataController.writerContext
                 moc.perform {
-                    guard let json = data!.responseJson else {
+                    guard let json = data?.responseJson as? [String: Any] else {
                         DDLogError("No JSON")
                         completion(false)
                         return
@@ -366,7 +367,7 @@ class InsuranceUtils {
                 moc.perform {
                     do {
                         
-                        guard let json = data!.responseJson else {
+                        guard let json = data?.responseJson as? [String: Any] else {
                             DDLogError("No JSON")
                             completion(false)
                             return

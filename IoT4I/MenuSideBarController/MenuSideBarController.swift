@@ -43,6 +43,7 @@ import UIKit
 import MBProgressHUD
 import CocoaLumberjack
 import UICKeyChainStore
+import BMSCore
 
 public enum SideMenu {
     
@@ -193,15 +194,16 @@ class MenuSideBarController: UITableViewController {
                 // Json object
                 case .ok(_):
                     DDLogInfo("LOGOUT OK")
-                    IMFAuthorizationManager.sharedInstance().logout({ (response, error) in
-                        UIApplication.shared.applicationIconBadgeNumber = 0
-                        let window = UIApplication.shared.keyWindow
-                        let sb = UIStoryboard(name:"SignInController",bundle:nil)
-                        let vc = sb.instantiateInitialViewController()
-                        window!.rootViewController = vc
-                        })
-                    }
-                })
+                    // TODO:
+//                    IMFAuthorizationManager.sharedInstance().logout({ (response, error) in
+//                        UIApplication.shared.applicationIconBadgeNumber = 0
+//                        let window = UIApplication.shared.keyWindow
+//                        let sb = UIStoryboard(name:"SignInController",bundle:nil)
+//                        let vc = sb.instantiateInitialViewController()
+//                        window!.rootViewController = vc
+//                        })
+                }
+            })
         default:
             break
         }

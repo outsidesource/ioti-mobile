@@ -45,12 +45,12 @@ import JavaScriptCore
 //PUT APPLICATION ROUTE HERE
 //applicationRoute exampe: https://YourApplicationRoute.mybluemix.net Without "/" at the end of the url
 
-let applicationRoute =
+let applicationRoute = "applicationRoute"
 
 //PUT MCA APP GUID / TENANTID HERE, IOT API APPLICATION GUID
 //applicationId exampe: abcdefgh-abcd-abcd-abcd-abcdabcdabcd
 
-let applicationId =
+let applicationId = "applicationId"
 
 //////////////////////////////////////////////////////
 

@@ -75,9 +75,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIToolbar.appearance().barTintColor = Insurance_barTintColor
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         
-        
-        DDLog.add(DDTTYLogger.sharedInstance()) // TTY = Xcode console
-        DDLog.add(DDASLLogger.sharedInstance()) // ASL = Apple System Logs
+        DDLog.add(DDTTYLogger.sharedInstance) // TTY = Xcode console
+        DDLog.add(DDASLLogger.sharedInstance) // ASL = Apple System Logs
         
         // http://stackoverflow.com/questions/6411549/where-is-logfile-stored-using-cocoalumberjack
         let documentsFileManager = DDLogFileManagerDefault(logsDirectory:Utils.documentsDirectory.path)
@@ -233,43 +232,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //MARK: APN
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
-        DDLogInfo("Device Token: \(deviceToken)")
-        
-        let push = IMFPushClient.sharedInstance()
-        
-        push?.initialize(withAppGUID: PushRoute, clientSecret: PushSecret)
-        push?.register(withDeviceToken: deviceToken) { (response, error) in
-            if error != nil {
-                print("Error during device registration \(error.debugDescription)")
-            }
-            else {
-                let json = response?.responseJson
-                if let deviceId = json?["deviceId"] as? String {
-                    lastDeviceId = deviceId
-                    
-                    iService.postAPNToken(self, completion: { (code) in
-                        switch code {
-                        case .cancelled:
-                            DDLogInfo("Cancelled")
-                        case let .error(error):
-                            DDLogError("postAPNToken: " + error.localizedDescription)
-                        case let .httpStatus(status,_):
-                            let message = HTTPURLResponse.localizedString(forStatusCode: status)
-                            DDLogError("postAPNToken: " + message)
-                        // Json object
-                        case .ok(_):
-                            DDLogInfo("APN OK")
-                        }
-                    })
-                    
-                } else {
-                    DDLogError("Missing Device Id for push registration")
-                }
-                
-                print("Response during device registration json: \(response?.responseJson.description)")
-            }
-        }
+
+        // TODO: 
+//        DDLogInfo("Device Token: \(deviceToken)")
+//
+//        let push = IMFPushClient.sharedInstance()
+//
+//        push?.initialize(withAppGUID: PushRoute, clientSecret: PushSecret)
+//        push?.register(withDeviceToken: deviceToken) { (response, error) in
+//            if error != nil {
+//                print("Error during device registration \(error.debugDescription)")
+//            }
+//            else {
+//                let json = response?.responseJson
+//                if let deviceId = json?["deviceId"] as? String {
+//                    lastDeviceId = deviceId
+//
+//                    iService.postAPNToken(self, completion: { (code) in
+//                        switch code {
+//                        case .cancelled:
+//                            DDLogInfo("Cancelled")
+//                        case let .error(error):
+//                            DDLogError("postAPNToken: " + error.localizedDescription)
+//                        case let .httpStatus(status,_):
+//                            let message = HTTPURLResponse.localizedString(forStatusCode: status)
+//                            DDLogError("postAPNToken: " + message)
+//                        // Json object
+//                        case .ok(_):
+//                            DDLogInfo("APN OK")
+//                        }
+//                    })
+//
+//                } else {
+//                    DDLogError("Missing Device Id for push registration")
+//                }
+//
+//                print("Response during device registration json: \(response?.responseJson.description)")
+//            }
+//        }
     }
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error){
         
